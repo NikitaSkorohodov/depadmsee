@@ -10,10 +10,8 @@ const session = require('express-session');
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
-const methodOverride = require('method-override'); // Подключение method-override
 const ordersRoutes = require('./routes/orders');
 const favoritesRouter = require('./routes/favorites');
-
 
 // Passport Config
 require('./config/passport');
@@ -25,7 +23,6 @@ const coursesRoutes = require('./routes/products');
 const authRoutes = require('./routes/auth');
 
 const app = express();
-
 
 // Set strictQuery option
 mongoose.set('strictQuery', false); // Change to true if you want strict queries
@@ -44,14 +41,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(methodOverride('_method')); // Добавлено для поддержки DELETE и PUT
-
 const hbs = exphbs.create({
   defaultLayout: 'main',
   extname: 'hbs',
   handlebars: allowInsecurePrototypeAccess(Handlebars),
   helpers: {
-    eq: (a, b) => a === b,
     __: function (...args) { return i18n.__.apply(this, args); }
   }
 });
@@ -81,7 +75,7 @@ const PORT = process.env.PORT || 3000;
 
 async function start() {
   try {
-    const url = 'mongodb+srv://nikitaskoroho14:CqA0yoBoyun0yOVc@root.yil9zns.mongodb.net/shop';
+    const url = '';
     await mongoose.connect(url, {
       useNewUrlParser: true,
     });
