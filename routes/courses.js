@@ -6,8 +6,7 @@ const router = Router();
 router.get('/', async (req, res) => {
   try {
     const courses = await Product.find();
-    
-    res.render('courses', {
+    res.render('products', {
       title: 'Курсы',
       isCourses: true,
       courses
@@ -22,7 +21,7 @@ router.get('/', async (req, res) => {
 router.get('/ed', async (req, res) => {
   try {
     const courses = await Product.find();
-    res.render('courses', {
+    res.render('products', {
       title: 'Курсы',
       isCourses: true,
       courses
@@ -37,31 +36,46 @@ router.get('/ed', async (req, res) => {
 router.get('/search', async (req, res) => {
   try {
     const searchTerm = req.query.q;
-    const category = req.query.category; // Добавляем получение категории из запроса
-    if (!searchTerm || typeof searchTerm !== 'string') {
-      throw new Error('Invalid search term');
-    }
-    let query = {
-      $or: [
+    const category = req.query.category;
+    const gpu = req.query.gpu;
+    const cpu = req.query.cpu;
+    const priceMin = req.query.priceMin ? parseFloat(req.query.priceMin) : null;
+    const priceMax = req.query.priceMax ? parseFloat(req.query.priceMax) : null;
+
+    // Fetch distinct GPU values for filter options
+    const gpus = await Course.distinct('gpu'); 
+
+    // Check if searchTerm is valid
+    let query = {};
+
+    // If there is a search term, build the regex search
+    if (searchTerm && typeof searchTerm === 'string' && searchTerm.trim() !== '') {
+      query.$or = [
         { title: { $regex: searchTerm, $options: 'i' } },
         { description: { $regex: searchTerm, $options: 'i' } }
-      ]
-    };
-    // Если указана категория, добавляем ее в поиск
-    if (category) {
-      query.category = category;
+      ];
     }
-    const courses = await Product.find(query);
+
+    // Add other filters if they are provided
+    if (category) query.category = category;
+    if (gpu) query.gpu = gpu;
+    if (cpu) query.cpu = cpu;
+    if (priceMin) query.price = { $gte: priceMin };
+    if (priceMax) query.price = { ...query.price, $lte: priceMax };
+
+    const courses = await Course.find(query);
     res.render('search', {
-      title: '',
+      title: 'Результаты поиска',
       isCourses: true,
-      courses
+      courses,
+      gpus // Pass GPU list to the template
     });
   } catch (error) {
     console.error('Error searching courses:', error);
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 // GET /courses/:id/edit - страница редактирования курса
 router.get('/:id/edit', async (req, res) => {
@@ -86,7 +100,7 @@ router.post('/edit', async (req, res) => {
     const { id } = req.body;
     delete req.body.id;
     await Product.findByIdAndUpdate(id, req.body);
-    res.redirect('/courses');
+    res.redirect('/products');
   } catch (error) {
     console.error('Error updating course:', error);
     res.status(500).send('Internal Server Error');
@@ -97,7 +111,7 @@ router.post('/edit', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const course = await Course.findById(req.params.id);
-    res.render('course', {
+    res.render('products', {
       layout: 'empty',
       title: `Курс ${course.title}`,
       course,

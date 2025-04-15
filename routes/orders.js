@@ -24,27 +24,11 @@ router.post('/checkout', async (req, res) => {
       return res.status(400).send('В корзине нет курсов');
     }
 
-    // Проверка наличия всех курсов
-    const validCourses = await Promise.all(card.courses.map(async (course) => {
-      const foundCourse = await Course.findById(course._id);
-      if (!foundCourse) {
-        console.error('Course not found for ID:', course._id);
-        return null; // Убираем курс, если он не найден
-      }
-      return foundCourse;
-    }));
-
-    const filteredCourses = validCourses.filter(course => course !== null);
-
-    const totalPrice = filteredCourses.reduce((acc, course) => acc + course.price, 0);
+    const totalPrice = card.courses.reduce((acc, course) => acc + course.price, 0);
 
     const newOrder = new Order({
       user: userId,
-      courses: filteredCourses.map(course => ({
-        _id: course._id,
-        title: course.title,
-        price: course.price
-      })),
+      courses: card.courses,
       totalPrice: totalPrice,
       deliveryPoint: deliveryPoint
     });
@@ -70,47 +54,23 @@ router.get('/', async (req, res) => {
 
     const orders = await Order.find({ user: req.user._id }).populate('user');
 
-    // Проверка, если заказы отсутствуют, отправляем пустой массив в шаблон
-    if (!orders || orders.length === 0) {
-      return res.render('orders', {
-        title: 'Ваши заказы',
-        orders: []  // Отправляем пустой массив заказов
-      });
-    }
-
     // Преобразуем каждый заказ, чтобы заменить идентификаторы курсов на их названия
     const formattedOrders = await Promise.all(orders.map(async (order) => {
-      if (!order) {
-        throw new Error('Order is null or undefined');
-      }
-
-      const courses = await Promise.all(order.courses.map(async (courseId) => {
-        
-        try {
-          const course = await Course.findById(courseId);
-          if (!course) {
-           
-            return null; // Возвращаем null, если курс не найден
-          }
-          return { _id: course._id, title: course.title, price: course.price };
-        } catch (error) {
-          console.error('Error fetching course:', error);
-          return null;
-        }
+      const courses = await Promise.all(order.courses.map(async courseId => {
+        const course = await Course.findById(courseId);
+        return { _id: course._id, title: course.title, price: course.price };
       }));
 
-      // Фильтрация несуществующих курсов
-      const validCourses = courses.filter(course => course !== null);
-
-      const formattedDate = order.date ? order.date.toDateString() : 'Unknown date';
+      // Преобразуем дату в формат строки только с датой
+      const formattedDate = order.date.toDateString();
 
       return {
         _id: order._id,
         user: order.user,
-        courses: validCourses, // Используем только существующие курсы
+        courses,
         totalPrice: order.totalPrice,
-        date: formattedDate,
-        deliveryPoint: order.deliveryPoint,
+        date: formattedDate, // Передаем отформатированную дату в шаблон
+        deliveryPoint: order.deliveryPoint, // Передаем точку выдачи
         __v: order.__v
       };
     }));
@@ -129,43 +89,30 @@ router.get('/', async (req, res) => {
 // GET /all-orders - отображение списка всех заказов для всех пользователей
 router.get('/all-orders', async (req, res) => {
   try {
-    const orders = await Order.find().populate('user');
+    const orders = await Order.find().populate('user'); // Получение всех заказов с информацией о пользователях
 
-    // Проверка, что заказы найдены
-    if (!orders || orders.length === 0) {
-      return res.status(404).send('No orders found');
-    }
-
-    // Преобразуем каждый заказ, чтобы заменить идентификаторы курсов на их названия
     const formattedOrders = await Promise.all(orders.map(async (order) => {
-      if (!order) {
-        throw new Error('Order is null or undefined');
-      }
-
-      const courses = await Promise.all(order.courses.map(async (courseId) => {
-       
-        try {
-          const course = await Course.findById(courseId);
-          if (!course) {
-            console.error('Course not found for ID:', courseId); // Логирование ошибки
-            return null; // Возвращаем null, если курс не найден
-          }
-          return { _id: course._id, title: course.title, price: course.price };
-        } catch (error) {
-          console.error('Error fetching course:', error);
+      const courses = await Promise.allSettled(order.courses.map(async (courseId) => {
+        const course = await Course.findById(courseId);
+        if (!course) {
+          console.error(`Курс с ID ${courseId} не найден.`);
           return null;
         }
+        return { _id: course._id, title: course.title, price: course.price };
       }));
 
-      // Фильтрация несуществующих курсов
-      const validCourses = courses.filter(course => course !== null);
+      const validCourses = courses
+        .filter(result => result.status === "fulfilled" && result.value !== null)
+        .map(result => result.value);
 
-      const formattedDate = order.date ? order.date.toDateString() : 'Unknown date';
+      const formattedDate = order.date && order.date instanceof Date
+        ? order.date.toDateString()
+        : "Дата отсутствует";
 
       return {
         _id: order._id,
-        user: order.user,
-        courses: validCourses, // Используем только существующие курсы
+        user: order.user || { username: "Неизвестный пользователь" },
+        courses: validCourses,
         totalPrice: order.totalPrice,
         date: formattedDate,
         deliveryPoint: order.deliveryPoint,
@@ -178,18 +125,14 @@ router.get('/all-orders', async (req, res) => {
       orders: formattedOrders
     });
   } catch (error) {
-    console.error('Error fetching all orders:', error);
-    res.status(500).send('Internal Server Error');
+    console.error('Ошибка получения всех заказов:', error);
+    res.status(500).send('Внутренняя ошибка сервера');
   }
 });
-
 // DELETE /orders/delete/:id - удаление заказа
 router.post('/delete/:id', async (req, res) => {
   try {
-    const result = await Order.findByIdAndDelete(req.params.id);
-    if (!result) {
-      return res.status(404).send('Order not found');
-    }
+    await Order.findByIdAndDelete(req.params.id);
     res.redirect('/orders');
   } catch (error) {
     console.error('Error deleting order:', error);

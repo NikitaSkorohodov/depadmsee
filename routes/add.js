@@ -15,6 +15,10 @@ router.post('/', async (req, res) => {
         price: req.body.price, 
         img: req.body.img,
         description: req.body.description, // Добавляем описание курса
+        gpu: req.body.gpu,
+        cpu: req.body.cpu,
+        rum: req.body.rum,
+        ssd: req.body.ssd,
         category: req.body.category // Добавляем категорию курса
     });
     try { 
