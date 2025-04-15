@@ -13,6 +13,10 @@ const productSchema = new Schema({
   img: String,
   description: String,
   category: String,
+  gpu: String,
+  cpu: String,
+  rum: String,
+  ssd: String,
   comments: [
     {
       user: {
