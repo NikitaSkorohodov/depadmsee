@@ -1,32 +1,150 @@
-{{#if courses.length}}
-  <div class="row">
-    {{#each courses}}
-  <div class="col s12 m6">
-    <div class="card">
-      <div class="card-image">
-        <img src="{{img}}" alt="{{title}}">
-      </div>
-      <div class="card-content">
-        <span class="card-title">{{title}}</span>
-        <p class="price">{{price}}</p>
-      </div>
-      <div class="card-action actions">
-        <a href="/products/{{id}}" target="_blank">{{__ 'more details'}}</a>
-        <a href="/products/{{id}}/edit?allow=true">{{__ 'dit'}}</a>
-        <form action="/products/{{id}}/delete" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-danger">{{__ 'Delete'}}</button>
-        </form>
-        <form action="/card/add" method="POST" style="display: inline;">
-          <input type="hidden" name="id" value="{{id}}">
-          <button type="submit" class="btn btn-primary">{{__ 'Buy'}}</button>
-        </form>
-      </div>
-    </div>
+<style>
+  .card {
+             /* Sets the card height */
+    width: 500px;          /* Sets the card width */
+    height: 800px;
+    display: flex;         /* Enables Flexbox for content alignment */
+    flex-direction: column; /* Aligns content vertically */
+    justify-content: space-between; /* Spaces content evenly */
+    overflow: hidden;      /* Ensures content stays within the bounds */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds shadow for visual appeal */
+    border-radius: 5px;    /* Optional: Adds rounded corners */
+}
+.card-image img {
+    max-width: 100%; /* Ensures responsiveness */
+    height: 300px; /* Maintains aspect ratio */
+    object-fit: cover; /* Ensures the image fits nicely */
+    padding: 20px;
+}
+</style>
+<!-- Filter Form -->
+<div style="display: flex;  gap: 20px; background-color: #F0F0F0;">
+<div>
+<form action="/courses/search" method="get" class="filter-form" style="padding: 20px; padding-top: 300px; background-color: #F0F0F0;">
+<div style="display: flex;  gap: 20px;">
+  <div style="width: 100px;">
+    <label for="priceMin">Минимальная цена</label>
+    <input type="number" id="priceMin" name="priceMin" step="0.01" placeholder="Минимальная цена">
   </div>
-{{/each}}
+  <div style="width: 100px;">
+    <label for="priceMax">Максимальная цена</label>
+    <input type="number" id="priceMax" name="priceMax" step="0.01" placeholder="Максимальная цена">
+  </div>
+  </div>
+  <div style="width: 250px;">
+    <label for="category">Категория</label>
+    <input type="text" id="category" name="category" placeholder="Введите категорию">
+    <ul>
+      {{#each categorys}}
+        <li>
+          <button type="button" onclick="changeCategorys('{{this}}')">{{this}}</button>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+  <div style="width: 250px;">
+    <label for="gpu">GPU</label>
+    <input type="text" id="gpu" name="gpu" placeholder="Введите GPU">
+    <ul>
+      {{#each gpus}}
+        <li>
+          <button type="button" onclick="changeGpu('{{this}}')">{{this}}</button>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+  <div style="width: 250px;">
+    <label for="cpu">CPU</label>
+    <input type="text" id="cpu" name="cpu" placeholder="Введите CPU">
+     <ul>
+      {{#each cpus}}
+        <li>
+          <button type="button" onclick="changeCpu('{{this}}')">{{this}}</button>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Применить фильтры</button>
+</form>
+</div>
+<script>
+  // Function to update the GPU value in the form
+  function changeGpu(gpuValue) {
+    // Update the GPU input field with the selected GPU value
+    document.getElementById('gpu').value = gpuValue;
 
+    // Optionally, change the form's action URL dynamically based on the selected GPU value
+    // For example: /courses/search?gpu={selectedGpu}
+    const form = document.querySelector('.filter-form');
+    const currentUrl = new URL(form.action);
+    currentUrl.searchParams.set('gpu', gpuValue); // Set GPU as a query parameter
+    form.action = currentUrl.toString(); // Update the form's action URL
+  }
+   function changeCpu(cpuValue) {
+    // Update the GPU input field with the selected GPU value
+    document.getElementById('cpu').value = gpuValue;
+
+    // Optionally, change the form's action URL dynamically based on the selected GPU value
+    // For example: /courses/search?gpu={selectedGpu}
+    const form = document.querySelector('.filter-form');
+    const currentUrl = new URL(form.action);
+    currentUrl.searchParams.set('cpu', cpuValue); // Set GPU as a query parameter
+    form.action = currentUrl.toString(); // Update the form's action URL
+  }
+  function changeCategorys(categoryValue) {
+    // Update the GPU input field with the selected GPU value
+    document.getElementById('category').value = categoryValue;
+
+    // Optionally, change the form's action URL dynamically based on the selected GPU value
+    // For example: /courses/search?gpu={selectedGpu}
+    const form = document.querySelector('.filter-form');
+    const currentUrl = new URL(form.action);
+    currentUrl.searchParams.set('category', categoryValue); // Set GPU as a query parameter
+    form.action = currentUrl.toString(); // Update the form's action URL
+  }
+</script>
+<div>
+{{#if courses.length}}
+  <div class="row" style="padding: 20px; padding-top: 300px; background-color: #F0F0F0;">
+    {{#each courses}}
+      <div class="col s12 m4" > <!-- на маленьких экранах один элемент в строке, на средних - по два -->
+        <div class="card">
+          <div class="card-image">
+            <img src="{{img}}" alt="{{title}}">
+          </div>
+           <div class="card-content">
+            <span class="card-title">{{title}}</span>
+            <p class="price">{{price}}</p>
+            <div style="display: flex;  gap: 20px; ">
+            <p>gpu {{gpu}}</p>
+            <p>cpu {{cpu}}</p>
+            </div>
+             <div style="display: flex;  gap: 20px; ">
+            <p>rum {{rum}}</p>
+            <p>ssd {{ssd}}</p>
+            </div>
+          </div>
+         <div class="card-action actions">
+  <a href="/products/{{id}}" target="_blank">{{__ 'more details'}}</a>
+  <a href="/products/{{id}}/edit?allow=true">{{__ 'Edit'}}</a>
+  <form action="/card/add" method="POST">
+    <input type="hidden" name="id" value="{{id}}">
+    <button type="submit" class="btn btn-primary">{{__ 'Buy'}}</button>
+  </form>
+  <form action="/products/delete/{{id}}" method="POST" onsubmit="return confirm('{{__ 'Вы уверены, что хотите удалить этот курс?' }}')">
+  <input type="hidden" name="_method" value="DELETE">
+  <button type="submit" class="btn btn-danger">{{__ 'Удалить' }}</button>
+</form>
+
+</div>
+
+        </div>
+      </div>
+    {{/each}}
   </div>
 {{else}}
   <p>{{__ 'This technology is not yet available'}}</p>
 {{/if}}
 
+</div>

@@ -1,4 +1,28 @@
-<h1>Редактировать {{course.title}}</h1>
+<style>
+  /* Style for the buttons to make them bigger */
+  .btn {
+    font-size: 16px;
+    padding: 10px 20px; /* Increase padding for bigger buttons */
+    margin-right: 10px; /* Space between buttons */
+  }
+
+  /* Ensure buttons appear on the same line */
+  .button-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px; /* Optional space between the buttons */
+  }
+
+  .btn-primary {
+    background-color: #dd00ff;
+  }
+
+  .btn-danger {
+    background-color: #dc3545;
+  }
+</style>
+<div style="padding: 20px; padding-top: 300px; background-color: #F0F0F0;">
+<h1>Edit/Delite {{course.title}}</h1>
 
 <form action="/products/edit" method="POST">
   <div class="input-field">
@@ -24,7 +48,38 @@
     <label for="description">Technique Description</label>
     <span class="helper-text" data-error="введите описание"></span>
   </div>
+  <div class="input-field">
+    <textarea id="category" name="category" class="materialize-textarea" required>{{course.category}}</textarea>
+    <label for="category">Technique category</label>
+    <span class="helper-text" data-error="введите описание"></span>
+  </div>
   
   <input type="hidden" name="id" value="{{course.id}}">
-  <button class="btn btn-primary">Edit</button>
+   <button class="btn btn-primary">Save</button>
+   <button class="btn btn-danger" id="delete-btn" onclick="deleteCourse('{{course.id}}')">Delete</button>
 </form>
+
+<!-- Delete Button -->
+<script>
+  // Function to handle delete request
+  async function deleteCourse(courseId) {
+    const confirmDelete = confirm('Are you sure you want to delete this course?');
+    if (confirmDelete) {
+      try {
+        const response = await fetch(`/products/${courseId}`, {
+          method: 'DELETE',
+        });
+        if (response.ok) {
+          alert('Course deleted successfully');
+          window.location.href = '/products/ed'; // Redirect to the list of courses after deletion
+        } else {
+          alert('Failed to delete course');
+        }
+      } catch (error) {
+        console.error('Error deleting course:', error);
+        alert('Internal Server Error');
+      }
+    }
+  }
+</script>
+</div>

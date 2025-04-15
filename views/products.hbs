@@ -1,86 +1,141 @@
 <style>
-/* Стили для ссылок на продукт */
-.product-link {
-  color: black; /* Чёрный цвет */
-  text-decoration: underline; /* Подчеркивание */
-  display: block;
-  white-space: nowrap; /* Не переносить текст */
-  overflow: hidden; /* Скрыть текст, выходящий за пределы блока */
-  text-overflow: ellipsis; /* Добавить многоточие */
-  width: 100%; /* Убедиться, что ширина блока установлена */
-  max-width: calc(24ch + 1em); /* Максимальная ширина для 21 символа плюс отступы */
-  font-size: 0.8rem;
+  .card {
+             /* Sets the card height */
+    width: 500px;          /* Sets the card width */
+    height: 800px;
+    display: flex;         /* Enables Flexbox for content alignment */
+    flex-direction: column; /* Aligns content vertically */
+    justify-content: space-between; /* Spaces content evenly */
+    overflow: hidden;      /* Ensures content stays within the bounds */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds shadow for visual appeal */
+    border-radius: 5px;    /* Optional: Adds rounded corners */
 }
-
-/* Увеличенный размер кнопок */
-.large-button {
-  padding: 20px 30px; /* Увеличиваем отступы для большего размера кнопки */
-  font-size: 5.2rem; /* Увеличиваем шрифт */
+.card-image img {
+    max-width: 100%; /* Ensures responsiveness */
+    height: 300px; /* Maintains aspect ratio */
+    object-fit: cover; /* Ensures the image fits nicely */
+    padding: 20px;
 }
-.btn i, .btn-large i, .btn-small i, .btn-floating i, .btn-large i, .btn-small i, .btn-flat i {
-  font-size: 2.3rem;
-  line-height: inherit;
-}
-.btn, .btn-large, .btn-small, .btn-floating, .btn-large, .btn-small, .btn-flat {
-  font-size: 34px;
-  outline: 0;
-}
-.btn:hover {
-  color: purple; /* Цвет текста при наведении */
-}
-.btn i:hover {
-  color: purple; /* Цвет значка при наведении */
-}
-.card {
-  max-width: 350px; /* Устанавливаем максимальную ширину карточки */
-  margin: 20px; /* Центрируем карточки по горизонтали */
-}
-.card .card-image img {
-  height: 250px;
-  display: block;
-  border-radius: 2px 2px 0 0;
-  position: relative;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 100%;
-  object-fit: cover;
-}
-
-
 </style>
+<!-- Filter Form -->
+<div style="display: flex;  gap: 20px; background-color: #F0F0F0;">
+<div>
+<form action="/products" method="get" class="filter-form" style="padding: 20px; padding-top: 300px; background-color: #F0F0F0;">
+<div style="display: flex;  gap: 20px;">
+  <div style="width: 100px;">
+    <label for="priceMin">Минимальная цена</label>
+    <input type="number" id="priceMin" name="priceMin" step="0.01" placeholder="Минимальная цена">
+  </div>
+  <div style="width: 100px;">
+    <label for="priceMax">Максимальная цена</label>
+    <input type="number" id="priceMax" name="priceMax" step="0.01" placeholder="Максимальная цена">
+  </div>
+  </div>
+  <div style="width: 250px;">
+    <label for="category">Категория</label>
+    <input type="text" id="category" name="category" placeholder="Введите категорию">
+    <ul>
+      {{#each categorys}}
+        <li>
+          <button type="button" onclick="changeCategorys('{{this}}')">{{this}}</button>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+  <div style="width: 250px;">
+    <label for="gpu">GPU</label>
+    <input type="text" id="gpu" name="gpu" placeholder="Введите GPU">
+    <ul>
+      {{#each gpus}}
+        <li>
+          <button type="button" onclick="changeGpu('{{this}}')">{{this}}</button>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+  <div style="width: 250px;">
+    <label for="cpu">CPU</label>
+    <input type="text" id="cpu" name="cpu" placeholder="Введите CPU">
+     <ul>
+      {{#each cpus}}
+        <li>
+          <button type="button" onclick="changeCpu('{{this}}')">{{this}}</button>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+  
+  <button type="submit" class="btn btn-primary">Применить фильтры</button>
+</form>
+</div>
+<script>
+  // Function to update the GPU value in the form
+  function changeGpu(gpuValue) {
+    // Update the GPU input field with the selected GPU value
+    document.getElementById('gpu').value = gpuValue;
 
+    // Optionally, change the form's action URL dynamically based on the selected GPU value
+    // For example: /courses/search?gpu={selectedGpu}
+    const form = document.querySelector('.filter-form');
+    const currentUrl = new URL(form.action);
+    currentUrl.searchParams.set('gpu', gpuValue); // Set GPU as a query parameter
+    form.action = currentUrl.toString(); // Update the form's action URL
+  }
+   function changeCpu(cpuValue) {
+    // Update the GPU input field with the selected GPU value
+    document.getElementById('cpu').value = gpuValue;
 
+    // Optionally, change the form's action URL dynamically based on the selected GPU value
+    // For example: /courses/search?gpu={selectedGpu}
+    const form = document.querySelector('.filter-form');
+    const currentUrl = new URL(form.action);
+    currentUrl.searchParams.set('cpu', cpuValue); // Set GPU as a query parameter
+    form.action = currentUrl.toString(); // Update the form's action URL
+  }
+  function changeCategorys(categoryValue) {
+    // Update the GPU input field with the selected GPU value
+    document.getElementById('category').value = categoryValue;
 
+    // Optionally, change the form's action URL dynamically based on the selected GPU value
+    // For example: /courses/search?gpu={selectedGpu}
+    const form = document.querySelector('.filter-form');
+    const currentUrl = new URL(form.action);
+    currentUrl.searchParams.set('category', categoryValue); // Set GPU as a query parameter
+    form.action = currentUrl.toString(); // Update the form's action URL
+  }
+</script>
+<div>
+
+<!-- Display Products -->
 {{#if courses.length}}
-  <div class="row">
+  <div class="row" style="padding: 20px; padding-top: 300px; background-color: #F0F0F0;">
     {{#each courses}}
-      <div class="col s12 m3"> <!-- на маленьких экранах один элемент в строке, на средних - по два -->
+      <div class="col s12 m4">
         <div class="card">
           <div class="card-image">
             <img src="{{img}}" alt="{{title}}">
           </div>
           <div class="card-content">
-            <!-- Сделаем название товара ссылкой с черным цветом и подчеркиванием -->
-            <a href="/products/{{id}}" target="_blank" class="card-title product-link">{{title}}</a>
+            <span class="card-title">{{title}}</span>
             <p class="price">{{price}}</p>
+            <div style="display: flex;  gap: 20px; ">
+            <p>gpu {{gpu}}</p>
+            <p>cpu {{cpu}}</p>
+            </div>
+             <div style="display: flex;  gap: 20px; ">
+            <p>rum {{rum}}</p>
+            <p>ssd {{ssd}}</p>
+            </div>
           </div>
           <div class="card-action actions">
-            <!-- Ссылка "More details" -->
-            
-            
-            <!-- Кнопка добавления в корзину -->
+            <a href="/products/{{id}}" target="_blank">{{__ 'more details'}}</a>
             <form action="/card/add" method="POST" style="display:inline;">
               <input type="hidden" name="id" value="{{id}}">
-              <button type="submit" class="btn btn-primary"><i class="material-icons">shopping_cart</i></button>
+              <button type="submit" class="btn btn-primary">{{__ 'Buy'}}</button>
             </form>
-
-            <!-- Кнопка добавления в избранное -->
             <form action="/favorites/add" method="POST">
               <input type="hidden" name="courseId" value="{{id}}">
-              <button type="submit" class="btn btn-secondary"><i class="material-icons">favorite</i>
-</button>
+              <button type="submit" class="btn btn-secondary">like</button>
             </form>
           </div>
         </div>
@@ -88,7 +143,7 @@
     {{/each}}
   </div>
 {{else}}
-  <p>{{__ 'This technology is not yet available'}}</p>
+  <p>{{__ 'No products found matching your filters'}}</p>
 {{/if}}
-
-
+</div>
+</div>

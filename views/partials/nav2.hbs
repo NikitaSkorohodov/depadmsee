@@ -1,7 +1,7 @@
 <style>
 
     .navbar {
-        background-color: #009688;
+        background-color: #96007a;
         color: #fff;
         padding: 0px;
         position: relative; 
@@ -31,26 +31,26 @@
 
    
     .navbar ul {
-        background-color: #44025e;
+        background-color: #960082;
     }
 
-    @media only screen and (max-width: 992px) {
-        .navbar ul {
-            display: none; 
-        }
-        .navbar .burger-icon {
-            display: block; 
-        }
+   @media only screen and (max-width: 992px) {
+    .navbar ul {
+        display: none; /* Hide the menu on mobile by default */
     }
+    .navbar .burger-icon {
+        display: block; /* Show the burger icon on mobile */
+    }
+}
+
 </style>
 
 
 <nav class="navbar" id="navbar">
-  
     <div class="burger-icon" onclick="toggleMenu()">
         <img src="https://img.icons8.com/?size=100&id=_qjQIc8Lbp9S&format=png&color=000000" alt="Burger Icon" style="width: 100%; height: 100%;">
     </div>
-  
+
     <ul id="navbarList">
         <li>
             <a href="http://localhost:3000/courses/search?q=JavaScript" class="circle-search" style="display: flex; margin-top: 30px; align-items: center;">
@@ -72,7 +72,7 @@
         {{else}}
         <li><a href="/card">{{__ 'CARD'}}</a></li>
         {{/if}}
- 
+
         <li>
             <a href="/?lang=en">English</a>
         </li>
@@ -81,6 +81,7 @@
         </li>
     </ul>
 </nav>
+
 
 <script>
     function toggleMenu() {

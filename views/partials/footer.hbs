@@ -1,2 +1,85 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="/app.js"></script>
+<style>
+.footer {
+    display: flex;    /* Spreads the columns evenly */
+    align-items: top;  
+    padding-top: 100px;             /* Aligns items vertically */
+    padding-left: 50px;                     /* Adds spacing around the footer */
+    background-color: #000000;         /* Sets background color */
+    color: #ffffff;    
+    height: 700px;                /* Sets text color */
+}
+
+.footer-column {
+    margin-left: 50px;                        /* Columns grow or shrink evenly */
+    text-align: left;                /* Centers content horizontally */
+}
+
+.logo {
+    max-width: 450px;                  /* Adjust logo size */
+    height: auto;                      /* Maintains aspect ratio */
+}
+
+
+
+.links-column li {
+    margin: 5px 0;                     /* Adds space between links */
+}
+
+.links-column a {
+    color: #ffffff;                    /* Keeps links white */
+    text-decoration: none;             /* Removes underline */
+}
+
+.links-column a:hover {
+    text-decoration: underline;        /* Adds underline on hover */
+}
+
+    .ffirst-section {
+    padding-top: 150px;
+    justify-items: center;                  /* Enables Flexbox layout */
+    align-items: center;              /* Centers items vertically */
+    justify-content: center;          /* Centers items horizontally */
+    height: 1000px;                    /* Maintains the height */
+    background-image: url("/fbg.png");
+    background-size: cover;           /* Cover the entire div */
+    background-position: center;      /* Center the background image */
+    background-repeat: no-repeat;     /* Prevent the image from repeating */
+    width: 100%;                      /* Optional, set width for your div */
+}
+.ffirst-section h1 {
+    color: #ffffff;          /* Sets the text color to white */
+    font-size: 80px;         /* Sets the font size to 40px */
+    font-family: 'Saira-condensed', sans-serif; /* Ensures the font is Saira */
+    text-align: center;      /* Optional: Centers the text horizontally */
+    margin: 0;               /* Optional: Removes default margin */
+    text-transform: uppercase;
+    font-weight: bold; 
+}
+</style>
+<div class="ffirst-section">
+    <img src="/Group 3.png" alt="Logo" class="logo">
+<h1>{{__ 'Prebuilt Power to Love'}}</h1>
+</div>
+<footer class="footer">
+    
+    <div class="footer-column logo-column">
+        <img src="/Group 3.png" alt="Logo" class="logo">
+    </div>
+    <div class="footer-column links-column">
+        <ul>
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/services">Services</a></li>
+        </ul>
+    </div>
+    <div class="footer-column links-column">
+        <ul>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Use</a></li>
+            <li><a href="/faq">FAQ</a></li>
+        </ul>
+    </div>
+</footer>
+
