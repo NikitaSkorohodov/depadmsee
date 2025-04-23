@@ -1,6 +1,8 @@
 {
     "Navbar Example": "Navigeerimisriba näide",
-    "Search": "Otsi",
+    "HOME": "ESI LEHT",
+    "jiki": "ESI LEHT",
+    "CONTACT": "KONTAKT",
     "ADD PRODUCTS": "LISA TOOTEID",
     "Edit": "Redigeeri",
     "Create new admin": "Loo uus admin",
@@ -8,7 +10,7 @@
     "PRODUCTS": "TOOTED",
     "CARD": "KAART",
     "REGISTER": "REGISTREERI",
-    "LOGIN": "LOGI SISSE",
+    "LOG IN": "LOGI SISSE",
     "LOG OUT": "LOGI VÄLJA",
     "♥": "♥",
     "English": "Inglise",
