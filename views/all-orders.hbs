@@ -25,6 +25,13 @@
       border: none;
       cursor: pointer;
     }
+        .container {
+        width: 80%;
+        margin-top: 100px !important;
+        margin-bottom: 100px !important;
+        z-index: 0;
+        position: relative;
+    }
   </style>
 </head>
 <body>
@@ -36,17 +43,17 @@
         {{#each orders}}
           <li class="order-item">
             <form action="/orders/delete/{{_id}}" method="POST">
-              <button type="submit" class="delete-button">&times;</button>
+              <button type="submit" class="delete-button">X</button>
             </form>
             <p>Заказ создан: {{date}}</p>
             <p>Пользователь: {{user.username}}</p>
-            <p>Итоговая цена: {{totalPrice}} руб.</p>
+            <p>Итоговая цена: {{totalPrice}} eur.</p>
             <p>Точка выдачи: {{deliveryPoint}}</p> <!-- Добавляем отображение точки выдачи -->
             <ul class="course-list">
               {{#each courses}}
                 <li class="course-item">
-                  <p>Курс: {{this.title}}</p>
-                  <p>Цена: {{this.price}} руб.</p>
+                  <p>product: {{this.title}}</p>
+                  <p>price: {{this.price}} eur.</p>
                 </li>
               {{/each}}
             </ul>

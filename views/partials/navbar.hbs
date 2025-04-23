@@ -1,85 +1,152 @@
 <style>
 .nav2 {
         
-        background-color: #820096;
+        
         position: sticky;
         justify-content: center;
     }
-
-  @media only screen and (max-width: 602px) {
-    .nav2 {
-        display: block !important;
-    }
-#nav-mobile {
-    display: flex;
-    justify-content: flex-end; /* Moves items to the right */
+#nav-mobile-a {
+    display: none; /* Hide menu by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(70, 2, 158, 0.9); /* Fullscreen dark overlay */
+    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    z-index: 10;
 }
 
-.circle-img {
-    margin-left: 10px; /* Optional: Adds spacing between the icons */
+#nav-mobile-a a {
+    color: white;
+    margin: 20px 0;
+    text-decoration: none;
+    font-size: 24px;
 }
 
+.nav-wrapper {
+  background-color: #820096;
+  width: 95%;
+   /* по желанию, ограничение на ширину */
+  margin: 0 auto;
+  
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  border-radius: 12px; 
+}
+@media only screen and (max-width: 1000px) {
+  #desck {
+    display: none !important;
+  }
+   .mobile-menu-button {
+        display: block; /* Show button on smaller screens */
+    }
+}
+@media only screen and (min-width: 1000px) {
+  
+   .mobile-menu-button {
+        display: none; /* Show button on smaller screens */
+    }
 }
 
 </style>
 <nav class="nav2">
   <div class="nav-wrapper">
     <a href="/" class="brand-logo" style="margin-right: 20px; margin-top: 20px; display: flex; align-items: center;">
-      <img src="/Group 3.png" alt="App Logo" style="width: 300px; height: 70px;  margin-left: 20px;">
+      <img src="/Group 3.png" alt="App Logo" style="width: 230px; height: 70px;  margin-left: 20px;">
     </a>
     
-    <ul id="nav-mobile" style="margin-left: 420px; margin-top: 25px; padding-top: 10px; display: flex; align-items: center;">
+    <ul id="nav-mobile" style="margin-left: 260px; margin-top: 25px; padding-top: 10px; display: flex; align-items: center;">
       <li>
         <p>|</p>
       </li>
+     
       {{#if isHome}}
-        <li class="active" ><a href="/">{{__ 'MAIN'}}</a></li>
+        <li id="desck" class="active" ><a href="/">{{__ 'HOME'}}</a></li>
       {{else}}
-        <li><a href="/">{{__ 'MAIN'}}</a></li>
+        <li id="desck"><a href="/">{{__ 'HOME'}}</a></li>
       {{/if}}
       {{#if isCourses}}
-        <li class="active" ><a href="/products">{{__ 'PRODUCTS'}}</a></li>
+        <li id="desck" class="active" ><a href="/products">{{__ 'PRODUCTS'}}</a></li>
       {{else}}
-        <li><a href="/products">{{__ 'PRODUCTS'}}</a></li>
+        <li id="desck"><a href="/products">{{__ 'PRODUCTS'}}</a></li>
       {{/if}}
       {{#if isContact}}
-        <li class="active" ><a href="/contact">{{__ 'contact'}}</a></li>
+        <li id="desck" class="active" ><a href="/contact">{{__ 'CONTACT'}}</a></li>
       {{else}}
-        <li><a href="/contact">{{__ 'contact'}}</a></li>
+        <li id="desck"><a href="/contact">{{__ 'CONTACT'}}</a></li>
       {{/if}}
       <ul id="nav-mobile" style="margin-left: auto;">
   {{#if user}}
-    <li>
+    <li id="desck">
       <a href="/orders" style="color: white;">Welcome, {{user.username}}</a>
     </li>
     {{#if isAdmin}}
-      <li><a href="/add">{{__ 'NEW PRODUCT'}}</a></li>
-      <li><a href="/products/ed">{{__ 'EDIT'}}</a></li>
-      <li><a href="/auth/create-admin">{{__ 'NEW ADMIN'}}</a></li>
-      <li><a href="/orders/all-orders">{{__ 'USERS ORDERS'}}</a></li>
+      <li id="desck"><a href="/coursesfr">{{__ 'ADMIN panel'}}</a></li>
     {{/if}}
-    <li><a href="/card">{{__ 'CARD'}}</a></li>
-    <li><a href="/favorites">{{__ 'FAVORITE'}}</a></li>
-    <li><a href="/auth/logout">{{__ 'LOG OUT'}}</a></li>
+    <li id="desck"><a href="/card">{{__ 'CARD'}}</a></li>
+    <li id="desck"><a href="/favorites">{{__ 'FAVORITE'}}</a></li>
+    <li id="desck"><a href="/auth/logout">{{__ 'LOG OUT'}}</a></li>
   {{else}}
     <!-- If the user is not logged in -->
-    <li><a href="/auth/register">{{__ 'REGISTER'}}</a></li>
-    <li><a href="/auth/login">{{__ 'LOG IN'}}</a></li>
+    <li id="desck"><a href="/auth/register">{{__ 'REGISTER'}}</a></li>
+    <li id="desck"><a href="/auth/login">{{__ 'LOG IN'}}</a></li>
   {{/if}}
 
-
-      <li>
+      <li id="desck">
         <a href="/?lang=en" class="circle-img" style="display: flex; align-items: center; ">
           <img src="https://s2.qwant.com/thumbr/474x237/e/b/5eb6584fba7b7c72464b9658ade58d510f27222e1a63b565599c39596dc274/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOIP.yuFjx7jkfs44XcVdsQ8c5wHaDt%26pid%3DApi&q=0&b=1&p=0&a=0" alt="English" style="width: 50px; height: 50px; border-radius: 50%;">
         </a>
       </li>
-      <li>
-        <a href="/?lang=ru" class="circle-img" style="display: flex; align-items: center; ">
+      <li id="desck">
+        <a href="/?lang=et" class="circle-img" style="display: flex; align-items: center; ">
           <img src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="Russian" style="width: 50px; height: 50px; border-radius: 50%;">
         </a>
       </li>
+       <button class="mobile-menu-button" onclick="toggleMenu()">Menu</button>
+        <ul id="nav-mobile-a">
+  {{#if user}}
+    <li id="desck">
+      <a href="/orders" style="color: white;">Welcome, {{user.username}}</a>
+    </li>
+    {{#if isAdmin}}
+      <li><a href="/coursesfr">{{__ 'ADMIN PANEL'}}</a></li>
+    {{/if}}
+    <li><a href="/">{{__ 'MAIN'}}</a></li>
+    <li><a href="/products">{{__ 'PRODUCTS'}}</a></li>
+    <li><a href="/contact">{{__ 'CONTACT'}}</a></li>
+    <li><a href="/card">{{__ 'CARD'}}</a></li>
+    <li><a href="/favorites">{{__ 'FAVORITE'}}</a></li>
+    <li><a href="/auth/logout">{{__ 'LOG OUT'}}</a></li>
+  {{else}}
+    <li><a href="/">{{__ 'MAIN'}}</a></li>
+    <li><a href="/products">{{__ 'PRODUCTS'}}</a></li>
+    <li><a href="/contact">{{__ 'CONTACT'}}</a></li>
+    <li><a href="/auth/register">{{__ 'REGISTER'}}</a></li>
+    <li><a href="/auth/login">{{__ 'LOG IN'}}</a></li>
+  {{/if}}
+</ul>
+
       </ul>
+      
+     
     </ul>
+    
+
   </div>
 </nav>
+
+
+<script>
+function toggleMenu() {
+    const menu = document.getElementById('nav-mobile-a');
+    if (menu.style.display === 'flex') {
+        menu.style.display = 'none';
+    } else {
+        menu.style.display = 'flex';
+    }
+}
+</script>

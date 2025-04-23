@@ -54,17 +54,10 @@
     .container > ul > li > p:last-child {
       color: #777;
     }
-    
-    .no-orders {
-      color: #888;
-      font-size: 1.2em;
-      text-align: center;
-      padding: 20px;
-    }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="container" style="height: 1500px; padding: 200px; padding-top: 500px;" >
     <h1>{{title}}</h1>
 
     {{#if orders.length}}
@@ -72,13 +65,13 @@
         {{#each orders}}
           <li>
             <p>Заказ создан: {{date}}</p>
-            <p>Итоговая цена: {{totalPrice}} руб.</p>
-            <p>Точка выдачи: {{deliveryPoint}}</p>
+            <p>Итоговая цена: {{totalPrice}} eur.</p>
+            <p>Точка выдачи: {{deliveryPoint}}</p> <!-- Добавляем отображение точки выдачи -->
             <ul>
               {{#each courses}}
                 <li>
-                  <p>Курс: {{this.title}}</p>
-                  <p>Цена: {{this.price}} руб.</p>
+                  <p>prod: {{this.title}}</p>
+                  <p>Цена: {{this.price}} eur.</p>
                 </li>
               {{/each}}
             </ul>
@@ -86,7 +79,7 @@
         {{/each}}
       </ul>
     {{else}}
-      <p class="no-orders">У вас пока нет заказов.</p>
+      <p>У вас пока нет заказов.</p>
     {{/if}}
   </div>
 

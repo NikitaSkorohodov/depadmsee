@@ -12,6 +12,7 @@
     .container {
       width: 80%;
       margin: 0 auto;
+      padding-top: 200px;
     }
     h1 {
       text-align: center;
@@ -68,7 +69,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>{{__ 'card'}}</h1>
+    <h1>{{title}}</h1>
     {{#if courses.length}}
       <table>
         <thead>
@@ -84,11 +85,10 @@
               <td>{{this.title}}</td>
               <td>{{this.price}} €.</td>
               <td>
-                <button class="delete-button" data-id="{{this._id}}">&times;</button>
+                <button class="delete-button" data-id="{{this._id}}">Удалить</button>
               </td>
             </tr>
           {{/each}}
-          
         </tbody>
       </table>
       <div class="total-price">{{__ 'total price'}} {{totalPrice}} €.</div>
@@ -101,9 +101,8 @@
       </div>
       <form id="checkoutForm" action="/card/checkout" method="POST">
         <input type="hidden" name="deliveryPoint" id="selectedDeliveryPoint" required>
-         <button type="submit" id="checkoutButton" disabled>{{__ 'Desalt of order'}}</button>
+        <button type="submit" id="checkoutButton" disabled>Оформить заказ</button>
       </form>
-      
     {{else}}
       <p>{{__ 'Cart is empty'}}</p>
     {{/if}}

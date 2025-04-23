@@ -1,8 +1,42 @@
 <style>
+
+.accordion:active, .accordion:focus {
+    background-color: #F0F0F0;
+     border-bottom: none;
+}
+.acccon{
+  border-bottom: 2px solid black; /* Adds a black border at the bottom */
+}
+
+.accordion {
+    cursor: pointer;
+    padding: 10px;
+    width: 250px;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 18px;
+    transition: 0.4s;
+    background-color: #F0F0F0;
+}
+
+
+        .panel {
+          width: 250px;
+            padding: 0 10px;
+            display: none;
+            overflow: hidden;
+            background-color: #F0F0F0;
+             
+        }
+
+  .row {
+    padding: 20px;
+}
   .card {
              /* Sets the card height */
-    width: 500px;          /* Sets the card width */
-    height: 800px;
+    width: 400px;          /* Sets the card width */
+    height: 780px;
     display: flex;         /* Enables Flexbox for content alignment */
     flex-direction: column; /* Aligns content vertically */
     justify-content: space-between; /* Spaces content evenly */
@@ -12,16 +46,36 @@
 }
 .card-image img {
     max-width: 100%; /* Ensures responsiveness */
-    height: 300px; /* Maintains aspect ratio */
+    height: 70px; /* Maintains aspect ratio */
     object-fit: cover; /* Ensures the image fits nicely */
     padding: 20px;
 }
+  @media (max-width: 768px) {
+    .content {
+      flex-direction: column;
+    }
+    .card-image img {
+    max-width: 100%; /* Ensures responsiveness */
+    height: 50px; /* Maintains aspect ratio */
+    object-fit: cover; /* Ensures the image fits nicely */
+    padding: 10px;
+}
+ .row {
+    padding: 5px;
+}
+.card {
+    width: 350px;
+}
+  }
 </style>
 <!-- Filter Form -->
-<div style="display: flex;  gap: 20px; background-color: #F0F0F0;">
+<div class="content" style="display: flex;  gap: 20px; background-color: #F0F0F0;">
 <div>
-<form action="/products" method="get" class="filter-form" style="padding: 20px; padding-top: 300px; background-color: #F0F0F0;">
-<div style="display: flex;  gap: 20px;">
+<form action="/products" method="get" class="filter-form" style="padding: 20px; padding-top: 300px; background-color: #F0F0F0; width: 300px;">
+ <div class="acccon">
+ <button class="accordion">Price</button>
+    <div class="panel">
+        <div style="display: flex;  gap: 20px;">
   <div style="width: 100px;">
     <label for="priceMin">Минимальная цена</label>
     <input type="number" id="priceMin" name="priceMin" step="0.01" placeholder="Минимальная цена">
@@ -31,39 +85,97 @@
     <input type="number" id="priceMax" name="priceMax" step="0.01" placeholder="Максимальная цена">
   </div>
   </div>
-  <div style="width: 250px;">
-    <label for="category">Категория</label>
+    </div>
+</div>
+<div class="acccon">
+    <button class="accordion">Category</button>
+    <div class="panel">
+        <div style="width: 250px;">
     <input type="text" id="category" name="category" placeholder="Введите категорию">
     <ul>
       {{#each categorys}}
         <li>
-          <button type="button" onclick="changeCategorys('{{this}}')">{{this}}</button>
+          <button class="butsel" type="button" onclick="changeCategorys('{{this}}')">{{this}}</button>
         </li>
       {{/each}}
     </ul>
   </div>
-  <div style="width: 250px;">
-    <label for="gpu">GPU</label>
+    </div>
+    </div>
+     <div class="acccon">
+    <button class="accordion">GPU</button>
+    <div class="panel">
+        <div style="width: 250px;">
     <input type="text" id="gpu" name="gpu" placeholder="Введите GPU">
     <ul>
       {{#each gpus}}
         <li>
-          <button type="button" onclick="changeGpu('{{this}}')">{{this}}</button>
+          <button class="butsel" type="button" onclick="changeGpu('{{this}}')">{{this}}</button>
         </li>
       {{/each}}
     </ul>
   </div>
-  <div style="width: 250px;">
-    <label for="cpu">CPU</label>
+    </div>
+    </div>
+    <div class="acccon">
+    <button class="accordion">CPU</button>
+    <div class="panel">
+         <div style="width: 250px;">
     <input type="text" id="cpu" name="cpu" placeholder="Введите CPU">
      <ul>
       {{#each cpus}}
         <li>
-          <button type="button" onclick="changeCpu('{{this}}')">{{this}}</button>
+          <button class="butsel" type="button" onclick="changeCpu('{{this}}')">{{this}}</button>
         </li>
       {{/each}}
     </ul>
   </div>
+    </div>
+    </div>
+    <div class="acccon">
+    <button class="accordion">RUM</button>
+    <div class="panel">
+         <div style="width: 250px;">
+    <label for="rum">RUM</label>
+    <input type="text" id="rum" name="rum" placeholder="Введите rum">
+     <ul>
+      {{#each rums}}
+        <li>
+          <button class="butsel" type="button" onclick="changeRum('{{this}}')">{{this}}</button>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+    </div>
+    </div>
+    <div class="acccon">
+    <button class="accordion">SSD</button>
+    <div class="panel">
+          <div style="width: 250px;">
+    <label for="ssd">SSD</label>
+    <input type="text" id="ssd" name="ssd" placeholder="Введите ssd">
+     <ul>
+      {{#each ssds}}
+        <li>
+          <button class="butsel" type="button" onclick="changeSsd('{{this}}')">{{this}}</button>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+    </div>
+</div>
+    <script>
+     document.querySelectorAll('.accordion').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault(); // Останавливает обновление страницы
+        this.classList.toggle('active');
+        let panel = this.nextElementSibling;
+        panel.style.display = panel.style.display === "block" ? "none" : "block";
+    });
+});
+
+    </script>
+  
   
   <button type="submit" class="btn btn-primary">Применить фильтры</button>
 </form>
@@ -81,9 +193,31 @@
     currentUrl.searchParams.set('gpu', gpuValue); // Set GPU as a query parameter
     form.action = currentUrl.toString(); // Update the form's action URL
   }
+    function changeSsd(ssdValue) {
+    // Update the GPU input field with the selected GPU value
+    document.getElementById('ssd').value = ssdValue;
+
+    // Optionally, change the form's action URL dynamically based on the selected GPU value
+    // For example: /courses/search?gpu={selectedGpu}
+    const form = document.querySelector('.filter-form');
+    const currentUrl = new URL(form.action);
+    currentUrl.searchParams.set('ssd', ssdValue); // Set GPU as a query parameter
+    form.action = currentUrl.toString(); // Update the form's action URL
+  }
+    function changeRum(rumValue) {
+    // Update the GPU input field with the selected GPU value
+    document.getElementById('rum').value = rumValue;
+
+    // Optionally, change the form's action URL dynamically based on the selected GPU value
+    // For example: /courses/search?gpu={selectedGpu}
+    const form = document.querySelector('.filter-form');
+    const currentUrl = new URL(form.action);
+    currentUrl.searchParams.set('rum', rumValue); // Set GPU as a query parameter
+    form.action = currentUrl.toString(); // Update the form's action URL
+  }
    function changeCpu(cpuValue) {
     // Update the GPU input field with the selected GPU value
-    document.getElementById('cpu').value = gpuValue;
+    document.getElementById('cpu').value = cpuValue;
 
     // Optionally, change the form's action URL dynamically based on the selected GPU value
     // For example: /courses/search?gpu={selectedGpu}
@@ -107,10 +241,12 @@
 <div>
 
 <!-- Display Products -->
-{{#if courses.length}}
-  <div class="row" style="padding: 20px; padding-top: 300px; background-color: #F0F0F0;">
-    {{#each courses}}
-      <div class="col s12 m4">
+{{#if products.length}}
+  <div class="row" style=" padding-top: 300px; background-color: #F0F0F0; display: flex;
+      flex-wrap: wrap;
+      gap: 10px;">
+    {{#each products}}
+      <div class="prod">
         <div class="card">
           <div class="card-image">
             <img src="{{img}}" alt="{{title}}">

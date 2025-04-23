@@ -1,30 +1,96 @@
-{{#if courses.length}}
-  <div class="row">
-    {{#each courses}}
-      <div class="col s6">
-        <div class="card">
-          <div class="card-image">
-            <img src="{{img}}" alt="{{title}}">
-          </div>
-          <div class="card-content">
-            <span class="card-title">{{title}}</span>
-            <p class="price">{{price}}</p>
-          </div>
-          <div class="card-action actions">
-            <a href="/courses/{{id}}" target="_blank">Ouvrir le cours</a>
-            <a href="/courses/{{id}}/edit?allow=true">Modifier</a>
-            <form action="/card/add" method="POST">
-              <input type="hidden" name="id" value="{{id}}">
-              <button type="submit" class="btn btn-primary">Acheter</button>
-            </form>
-          </div>
-        </div>
-      </div>
-      {{#if @index_even}}
-        </div><div class="row">
-      {{/if}}
-    {{/each}}
-  </div>
-{{else}}
-  <p>Aucun cours pour le moment</p>
-{{/if}}
+<style>
+  .two-sections {
+    display: flex; /* Align sections in a row */
+    gap: 20px; /* Add space between sections */
+    padding: 20px; /* Add padding around the container */
+    align-items: center; 
+    justify-content: center;
+}
+@media only screen and (max-width: 600px) {
+    .two-sections {
+        flex-direction: column; /* Change layout to column on smaller screens */
+        gap: 10px; /* Reduce gap for compact layout */
+        align-items: center; /* Center sections vertically for a neat design */
+    }
+}
+.section {
+    flex: 1; /* Ensure both sections take equal space */
+    height: 400px; /* Set the height for each section */
+    background-size: cover; /* Make the background image fit the section */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent image repetition */
+    color: white; /* Set text color for visibility */
+    text-align: center; /* Align text in the center */
+    padding: 20px; /* Add padding inside each section */
+    border-radius: 10px; /* Optional: Add rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional: Add shadow for depth */
+    max-width: 800px;
+}
+.section1 {
+    flex: 1; /* Ensure both sections take equal space */
+    height: 400px; /* Set the height for each section */
+    background-size: cover; /* Make the background image fit the section */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent image repetition */
+    color: white; /* Set text color for visibility */
+    text-align: center; /* Align text in the center */
+    padding: 20px; /* Add padding inside each section */
+    border-radius: 10px; /* Optional: Add rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional: Add shadow for depth */
+    max-width: 400px;
+}
+
+.section h2 .section2 h2 {
+    margin: 0; /* Remove default margin */
+    font-size: 24px; /* Adjust title size */
+}
+
+.section p .section1 p {
+    margin-top: 10px; /* Add space below the title */
+    font-size: 16px; /* Adjust description size */
+}
+.three-section {
+    background-color: #F0F0F0; 
+    padding: 10px;            /* Optional: Removes default margin */
+    padding-top: 220px;
+    align-items: center; 
+    justify-content: center;
+}
+
+</style>
+<div class="three-section">
+  <div class="two-sections">
+    <div class="section" style="background-image: url('/mbg1.png');">
+        <h2>EDIT/DELITE</h2>
+        <p>Description for section 1.</p>
+        <a href="/products/ed">
+    <button type="submit" class="linkbtn">EDIT</button>
+</a>
+
+    </div>
+    <div class="section1" style="background-image: url('/mbg2.png');">
+        <h2>ADD ADMIN</h2>
+        <p>Description for section 2.</p>
+        <a href="/auth/create-admin">
+    <button type="submit" class="linkbtn">EDIT</button>
+</a>
+    </div>
+</div>
+ <div class="two-sections">
+    <div class="section1" style="background-image: url('/mbg3.png');">
+        <h2>ALL ORDERS</h2>
+        <p>Description for section 1.</p>
+        <a href="/orders/all-orders">
+    <button type="submit" class="linkbtn">EDIT</button>
+</a>
+    </div>
+    <div class="section" style="background-image: url('/mbg4.png');">
+        <h2>NEW PRODUCT</h2>
+        <p>Description for section 2.</p>
+        <a href="/add">
+    <button type="submit" class="linkbtn">EDIT</button>
+</a>
+    </div>
+</div>
+
+</div>

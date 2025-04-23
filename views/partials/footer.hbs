@@ -57,6 +57,19 @@
     text-transform: uppercase;
     font-weight: bold; 
 }
+@media only screen and (max-width: 600px) {
+    .footer {
+        flex-direction: column; /* Change layout to column for smaller screens */
+        align-items: center; /* Center footer columns for neat design */
+        gap: 10px; /* Reduce space between columns */
+    }
+
+    .footer-column {
+        width: 100%; /* Make columns span the full width */
+        text-align: center; /* Center the content within each column */
+        margin-left: 0px; 
+    }
+}
 </style>
 <div class="ffirst-section">
     <img src="/Group 3.png" alt="Logo" class="logo">

@@ -3,104 +3,281 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{course.title}}</title>
+  <title>{{product.title}}</title>
+  <style>
+    /* General styling for all cards */
+.component-card {
+  padding: 20px;
+  margin: 10px;
+  border-radius: 8px;
+  color: white;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Make it responsive */
+  max-width: 700px; /* Set a maximum width */
+  font-size: 20px;
+}
+
+/* Responsive styles for screens smaller than 768px */
+@media (max-width: 768px) {
+  .component-card {
+    padding: 15px;
+    width: 90%; /* Adjust the width to fit smaller screens */
+    font-size: 18px; /* Reduce font size */
+  }
+}
+
+/* Extra small screens (phones, less than 480px) */
+@media (max-width: 480px) {
+  .component-card {
+    padding: 10px;
+    width: 95%;
+    font-size: 16px; /* Further reduce font size */
+  }
+}
+
+
+/* Purple for GPU */
+.gpu {
+  background-color: #0dad22; /* Purple */
+  text-align: left; /* Align content horizontally to the right */
+}
+
+/* Blue for CPU */
+.cpu {
+  background-color: #007bff; /* Blue */
+  text-align: right;
+}
+
+/* Yellow for RAM */
+.ram {
+  background-color: #ffcc00; /* Yellow */
+  color: black; /* Text color should be dark for yellow background */
+  text-align: left;
+}
+
+/* Green for SSD */
+.ssd {
+  background-color: #c91148; /* Green */
+  text-align: right;
+}
+
+    .course {
+      width: 100%;
+      
+      margin: 0 auto;
+      
+      text-align: left;
+    }
+
+    .course h1 {
+      font-size: 70px;
+      margin-bottom: 10px;
+    }
+
+    .course img {
+      width: 100%;
+      max-width: 700px;
+      height: auto;
+      margin-bottom: 20px;
+    }
+
+    .course .price {
+      font-size: 50px;
+      color: #f00;
+      margin-bottom: 20px;
+    }
+
+    .comments {
+      text-align: left;
+      margin-top: 30px;
+      padding: 5px;
+      border-radius: 8px;
+    }
+
+    .comments h2 {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .comments ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .comments li {
+      padding: 10px;
+      border-bottom: 1px solid #000000;
+    }
+
+    .comments li:last-child {
+      border-bottom: none;
+    }
+
+    .comments strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .comments em {
+      font-size: 12px;
+      color: #535252;
+    }
+
+    .add-comment {
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .add-comment form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .add-comment label {
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .add-comment input,
+    .add-comment textarea {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      width: 100%;
+    }
+
+    .add-comment button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #007bff;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .add-comment button:hover {
+      background-color: #0056b3;
+    }
+      @media (max-width: 768px) {
+    .info {
+      flex-direction: column;
+      justify-items: center;
+    }
+  }
+  </style>
 </head>
 <body>
-  <div class="course">
-    <div class="course-content">
-      <img src="{{course.img}}" alt="{{course.title}}">
-      
-      <div class="course-details">
-        <h1>{{course.title}}</h1>
-        <p class="price">{{course.price}}</p>
-        <p>{{course.description}}</p>
-      </div>
-    </div>
-    <div class="course-buttons">
-      <form id="addToCartForm" action="/card/add" method="POST">
-        <input type="hidden" name="id" value="{{course.id}}">
-        <button type="submit" class="btn btn-primary"><i class="material-icons">shopping_cart</i> {{__ 'add to cart'}}</button>
-      </form>
-      <form action="/favorites/add" method="POST">
-        <input type="hidden" name="courseId" value="{{course.id}}">
-        <button type="submit" class="btn btn-secondary"><i class="material-icons">favorite</i> {{__ 'add to favorite'}}</button>
-      </form>
-      {{#if (eq user.role 'admin')}}
-    <a href="/products/{{course.id}}/edit?allow=true" class="btn btn-edit">
-      <i class="material-icons">edit</i> {{__ 'edit'}}
-    </a>
-    <form action="/products/{{course.id}}/delete" method="POST" style="display: inline;">
-      <button type="submit" class="btn btn-danger">{{__ 'Delete'}}</button>
-    </form>
 
-  {{/if}}
-</form>
+<div class="course">
+<div class="info" style="display: flex; align-items: center; padding-top: 200px;">
+  <img src="{{product.img}}" alt="{{product.title}}" style="flex: 1; margin-right: 20px;">
+  <div style="flex: 2;">
+    <h1>{{product.title}}</h1>
+    <p class="price">{{product.price}}</p>
+    <p>{{product.description}}</p> <!-- Добавлено описание товара -->
+     <div style="display: flex; align-items: center; padding-top: 20px;">
+    <form action="/card/add" method="POST" style="display:inline;">
+              <input type="hidden" name="id" value="{{product._id}}">
+              <button type="submit" class="btn btn-primary">{{__ 'Buy'}}</button>
+            </form>
+            <form action="/favorites/add" method="POST">
+              <input type="hidden" name="courseId" value="{{product._id}}">
+              <button type="submit" class="btn btn-secondary">like</button>
+            </form>
+            </div>
+  </div>
+</div>
+<div class="components" style="width: 100%; justify-items: center; background-color: #6a0dad; padding-top: 50px; padding-bottom: 50px;">
+    <div class="component-card gpu">
+  <h3>GPU</h3>
+  <p>{{product.gpu}}</p>
+</div>
 
-    </div>
-    <div class="comments">
-      <h2>Комментарии</h2>
-      <ul>
-        {{#each course.comments}}
-          <li>
-            <strong>{{this.user}}</strong>
-            <span>{{this.text}}</span>
-            <em>{{this.date}}</em>
-          </li>
-        {{/each}}
-      </ul>
-    </div>
+<div class="component-card cpu">
+  <h3>CPU</h3>
+  <p>{{product.cpu}}</p>
+</div>
 
-    <div class="add-comment">
-      <h3>Добавить комментарий</h3>
-      {{#if user}}
-      <form id="commentForm">
-        <input type="hidden" id="user" name="user" value="{{user.username}}">
-        <label for="text">Комментарий:</label>
-        <textarea id="text" name="text" required></textarea>
-        <button type="submit">Отправить</button>
-      </form>
-      {{else}}
-      <p>Пожалуйста, <a href="/auth/login">войдите</a>, чтобы оставить комментарий.</p>
-      {{/if}}
-    </div>
+<div class="component-card ram">
+  <h3>RAM</h3>
+  <p>{{product.rum}}</p>
+</div>
+
+<div class="component-card ssd">
+  <h3>SSD</h3>
+  <p>{{product.ssd}}</p>
+</div>
+
+</div>
+<div class="commentssection" style="background-color: #000000; width: 100%;  justify-items: center;  ">
+  <div class="comments" style="background-color: #a9a9a9; width: 50%; ">
+    <h2>Комментарии</h2>
+    <ul>
+      {{#each product.comments}}
+        <li>
+          <strong>{{this.user}}</strong>
+          <span>{{this.text}}</span>
+          <em>{{this.date}}</em>
+        </li>
+      {{/each}}
+    </ul>
   </div>
 
-  <script>
-    document.querySelector('#commentForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
+  <div class="add-comment" style="width: 50%;">
+    <h3>Добавить комментарий</h3>
+    {{#if user}}
+    <form id="commentForm" >
+      <input type="hidden" id="user" name="user" value="{{user.username}}"> <!-- Автоматически заполненное имя пользователя -->
+      <label for="text">Комментарий:</label>
+      <textarea style="background-color: #a9a9a9;" id="text" name="text" required></textarea>
+      <button type="submit">Отправить</button>
+    </form>
+    {{else}}
+    <p>Пожалуйста, <a href="/login">войдите</a>, чтобы оставить комментарий.</p>
+    {{/if}}
+  </div>
+</div>
+</div>
+<script>
+  document.querySelector('#commentForm').addEventListener('submit', async function (e) {
+    e.preventDefault();
 
-      const user = document.querySelector('#user').value;
-      const text = document.querySelector('#text').value;
-      const courseId = '{{course.id}}';
+    const user = document.querySelector('#user').value;
+    const text = document.querySelector('#text').value;
+    const productId = '{{product.id}}';
 
-      try {
-        const response = await fetch(`/products/${courseId}/comments`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ user, text })
-        });
+    try {
+      const response = await fetch(`/products/${productId}/comments`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ user, text })
+      });
 
-        if (response.ok) {
-          const newComment = await response.json();
-          const commentList = document.querySelector('.comments ul');
-          const newCommentElement = document.createElement('li');
-          newCommentElement.innerHTML = `
-            <strong>${newComment.user}</strong>
-            <span>${newComment.text}</span>
-            <em>${newComment.date}</em>
-          `;
-          commentList.appendChild(newCommentElement);
+      if (response.ok) {
+        const newComment = await response.json();
+        const commentList = document.querySelector('.comments ul');
+        const newCommentElement = document.createElement('li');
+        newCommentElement.innerHTML = `
+          <strong>${newComment.user}</strong>
+          <span>${newComment.text}</span>
+          <em>${newComment.date}</em>
+        `;
+        commentList.appendChild(newCommentElement);
 
-          document.querySelector('#text').value = '';
-        } else {
-          console.error('Failed to add comment');
-        }
-      } catch (error) {
-        console.error('Error:', error);
+        document.querySelector('#text').value = '';
+      } else {
+        console.error('Failed to add comment');
       }
-    });
-  </script>
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  });
+</script>
+
 </body>
 </html>

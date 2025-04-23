@@ -1,0 +1,62 @@
+<style>
+
+section {
+    display: flex; /* Enables Flexbox */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Centers content vertically */
+    align-items: center; /* Centers content horizontally */
+    height: 100vh; /* Makes the section take the full height of the viewport */
+    padding: 20px;
+    background-color: #200072; /* Keeps your original background color */
+}
+   .first-section {
+    display: flex; /* Enables Flexbox */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Centers content vertically */
+    align-items: center; /* Centers content horizontally */
+    height: 100vh; /* Makes the section take the full height of the viewport */
+    padding: 20px;                 /* Maintains the height */
+    background-image: url("/mbg4.png");
+    background-size: cover;           /* Cover the entire div */
+    background-position: center;      /* Center the background image */
+    background-repeat: no-repeat;     /* Prevent the image from repeating */
+    width: 100%;                      /* Optional, set width for your div */
+}
+
+.section {
+    
+    display: flex; /* Enables Flexbox for the section content */
+    flex-direction: column; /* Stack items vertically inside the section */
+    justify-content: center; /* Centers content vertically inside the section */
+    width: 100%;
+    align-items: center; /* Centers content horizontally inside the section */
+    max-width: 800px; /* Maintains the width you set */
+    height: 400px; /* Keeps the height of the section */
+    padding: 20px;
+    color: white;
+    text-align: center;
+    border-radius: 10px; /* Adds rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Keeps your shadow effect */
+}
+
+</style>
+<html lang="en">
+
+<body>
+    
+    <main>
+        <div class="first-section">
+<h1 style="color: rgb(255, 225, 0);">{{__ 'Contact Us'}}</h1>
+            
+           <div class="section" style="background-image: url('/mbg1.png');">
+        <p>Phone: +1 234 567 890</p>
+    <p>Email: contact@example.com</p>
+    </div>
+</div>
+        <section style="padding: 20px; padding-top: 300px; background-color: #200072; justify-content: center;">
+            
+        </section>
+    </main>
+    
+</body>
+</html>
