@@ -1,11 +1,17 @@
 const { Router } = require('express');
-const Course = require('../models/products'); // Убедитесь, что модель импортирована правильно
+const Product = require('../models/products'); // Убедитесь, что модель импортирована правильно
 const router = Router();
 
-// GET /courses - отображение списка курсов
+function isAdmin(req, res, next) {
+  if (req.isAuthenticated() && req.user.role === 'admin') {
+    return next();
+  }
+  res.redirect('/auth/login');
+}
+// GET /products - отображение списка курсов
 router.get('/', async (req, res) => {
   try {
-    const courses = await Course.find();
+    const products = await Product.find();
     const user = req.user; // Предположим, что информация о пользователе доступна в запросе
 
     // Определяем, является ли пользователь администратором
@@ -15,13 +21,17 @@ router.get('/', async (req, res) => {
       const category = req.query.category;
       const gpu = req.query.gpu;
       const cpu = req.query.cpu;
+      const rum = req.query.rum;
+      const ssd = req.query.ssd;
       const priceMin = req.query.priceMin ? parseFloat(req.query.priceMin) : null;
       const priceMax = req.query.priceMax ? parseFloat(req.query.priceMax) : null;
   
       // Fetch distinct values for filters
-      const gpus = await Course.distinct('gpu');
-      const categorys = await Course.distinct('category');
-      const cpus = await Course.distinct('cpu');
+      const gpus = await Product.distinct('gpu');
+      const categorys = await Product.distinct('category');
+      const cpus = await Product.distinct('cpu');
+      const rums = await Product.distinct('rum');
+      const ssds = await Product.distinct('ssd');
   
       // Build the search query
       let query = {};
@@ -36,32 +46,36 @@ router.get('/', async (req, res) => {
       if (category) query.category = category;
       if (gpu) query.gpu = gpu;
       if (cpu) query.cpu = cpu;
+      if (rum) query.rum = rum;
+      if (ssd) query.ssd = ssd;
       if (priceMin) query.price = { $gte: priceMin };
       if (priceMax) query.price = { ...query.price, $lte: priceMax };
   
-      const courses = await Course.find(query);
+      const products = await Product.find(query);
   
       res.render('products', { // Ensure you have a corresponding 'ed' template
         title: 'Результаты поиска',
-        isCourses: true,
-        courses,
+        isProducts: true,
+        products,
         categorys,
+        ssds,
         cpus,
         gpus,
+        rums,
         user, // Передаем информацию о пользователе в шаблон
         isAdmin
       });
     } catch (error) {
-      console.error('Error searching courses:', error);
+      console.error('Error searching products:', error);
       res.status(500).send('Internal Server Error');
     }
   } catch (error) {
-    console.error('Error fetching courses:', error);
+    console.error('Error fetching products:', error);
     res.status(500).send('Internal Server Error');
   }
 });
 
-router.get('/ed', async (req, res) => {
+router.get('/ed', isAdmin, async (req, res) => {
   const user = req.user; // Предположим, что информация о пользователе доступна в запросе
 
     // Определяем, является ли пользователь администратором
@@ -75,9 +89,9 @@ router.get('/ed', async (req, res) => {
     const priceMax = req.query.priceMax ? parseFloat(req.query.priceMax) : null;
 
     // Fetch distinct values for filters
-    const gpus = await Course.distinct('gpu');
-    const categorys = await Course.distinct('category');
-    const cpus = await Course.distinct('cpu');
+    const gpus = await Product.distinct('gpu');
+    const categorys = await Product.distinct('category');
+    const cpus = await Product.distinct('cpu');
 
     // Build the search query
     let query = {};
@@ -95,12 +109,12 @@ router.get('/ed', async (req, res) => {
     if (priceMin) query.price = { $gte: priceMin };
     if (priceMax) query.price = { ...query.price, $lte: priceMax };
 
-    const courses = await Course.find(query);
+    const products = await Product.find(query);
 
     res.render('edit', { // Ensure you have a corresponding 'ed' template
       title: 'Результаты поиска',
-      isCourses: true,
-      courses,
+      isProducts: true,
+      products,
       categorys,
       cpus,
       gpus,
@@ -108,17 +122,12 @@ router.get('/ed', async (req, res) => {
       isAdmin
     });
   } catch (error) {
-    console.error('Error searching courses:', error);
+    console.error('Error searching products:', error);
     res.status(500).send('Internal Server Error');
   }
 });
 
-
-
-
-// GET /courses/search - поиск курсов
-// GET /courses/search - поиск продуктов с фильтрами
-// GET /courses/search - поиск продуктов с фильтрами
+// GET /products/search - поиск продуктов с фильтрами
 router.get('/search', async (req, res) => {
   const user = req.user; // Предположим, что информация о пользователе доступна в запросе
 
@@ -133,9 +142,9 @@ router.get('/search', async (req, res) => {
     const priceMax = req.query.priceMax ? parseFloat(req.query.priceMax) : null;
 
     // Fetch distinct GPU values for the filter
-    const gpus = await Course.distinct('gpu');  // Fetch distinct GPU names from the database
-    const categorys = await Course.distinct('category');
-    const cpus = await Course.distinct('cpu');
+    const gpus = await Product.distinct('gpu');  // Fetch distinct GPU names from the database
+    const categorys = await Product.distinct('category');
+    const cpus = await Product.distinct('cpu');
 
     // Check if searchTerm is valid
     let query = {};
@@ -155,12 +164,12 @@ router.get('/search', async (req, res) => {
     if (priceMin) query.price = { $gte: priceMin };
     if (priceMax) query.price = { ...query.price, $lte: priceMax };
 
-    const courses = await Course.find(query);
+    const products = await Product.find(query);
 
     res.render('search', {
       title: 'Результаты поиска',
-      isCourses: true,
-      courses,
+      isProducts: true,
+      products,
       categorys,
       cpus,
       gpus, // Pass the distinct GPU list to the template
@@ -169,74 +178,80 @@ router.get('/search', async (req, res) => {
       
     });
   } catch (error) {
-    console.error('Error searching courses:', error);
+    console.error('Error searching products:', error);
     res.status(500).send('Internal Server Error');
   }
 });
 
 
 
-// GET /courses/:id/edit - страница редактирования курса
-router.get('/:id/edit', async (req, res) => {
+// GET /products/:id/edit - страница редактирования курса
+router.get('/:id/edit', isAdmin, async (req, res) => {
+  const user = req.user; // Предположим, что информация о пользователе доступна в запросе
+
+    // Определяем, является ли пользователь администратором
+    const isAdmin = user && user.role === 'admin';
   try {
     if (!req.query.allow) {
       return res.redirect('/');
     }
-    const course = await Course.findById(req.params.id);
-    res.render('course-edit', {
-      title: `Редактировать ${course.title}`,
-      course
+    const product = await Product.findById(req.params.id);
+    res.render('product-edit', {
+      title: `Редактировать ${product.title}`,
+      product,
+      user, // Передаем информацию о пользователе в шаблон
+      isAdmin 
     });
   } catch (error) {
-    console.error('Error fetching course for edit:', error);
+    console.error('Error fetching product for edit:', error);
     res.status(500).send('Internal Server Error');
   }
 });
 
-// POST /courses/edit - обновление курса
+// POST /product/edit - обновление курса
 router.post('/edit', async (req, res) => {
   try {
     const { id } = req.body;
     delete req.body.id;
-    await Course.findByIdAndUpdate(id, req.body);
+    await Product.findByIdAndUpdate(id, req.body);
     res.redirect('/products');
   } catch (error) {
-    console.error('Error updating course:', error);
+    console.error('Error updating product:', error);
     res.status(500).send('Internal Server Error');
   }
 });
 
-// GET /courses/:id - отображение информации о курсе
+// GET /product/:id - отображение информации о курсе
 router.get('/:id', async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id);
-    if (!course) {
-      return res.status(404).send('Course not found');
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).send('product not found');
     }
-    res.render('course', {
+    res.render('product', {
       layout: 'empty',
-      title: `product ${course.title}`,
-      course,
+      title: `product ${product.title}`,
+      product,
       user: req.user 
     });
   } catch (error) {
-    console.error('Error fetching course:', error);
+    console.error('Error fetching product:', error);
     res.status(500).send('Internal Server Error');
   }
 });
 
-// POST /courses/:id/comments - добавление комментария к курсу
+// POST /products/:id/comments - добавление комментария к курсу
 router.post('/:id/comments', async (req, res) => {
   try {
     const { user, text } = req.body;
-    const course = await Course.findById(req.params.id);
-    if (!course) {
-      return res.status(404).send('Course not found');
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).send('product not found');
     }
 
     const newComment = { user, text, date: new Date() };
-    course.comments.push(newComment);
-    await course.save();
+    product.comments.push(newComment);
+    await product.save();
 
     res.json(newComment);
   } catch (error) {
@@ -246,15 +261,15 @@ router.post('/:id/comments', async (req, res) => {
 });
 router.delete('/:id', async (req, res) => {
   try {
-    const course = await Course.findById(req.params.id);
-    if (!course) {
-      return res.status(404).send('Course not found');
+    const product = await Product.findById(req.params.id);
+    if (!product) {
+      return res.status(404).send('product not found');
     }
 
-    await Course.findByIdAndDelete(req.params.id);
-    res.status(200).send('Course deleted successfully');
+    await Product.findByIdAndDelete(req.params.id);
+    res.status(200).send('product deleted successfully');
   } catch (error) {
-    console.error('Error deleting course:', error);
+    console.error('Error deleting product:', error);
     res.status(500).send('Internal Server Error');
   }
 });

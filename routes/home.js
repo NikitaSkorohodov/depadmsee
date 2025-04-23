@@ -2,6 +2,13 @@ const { Router } = require('express');
 const Course = require('../models/products');
 const router = Router();
 
+function isAdmin(req, res, next) {
+  if (req.isAuthenticated() && req.user.role === 'admin') {
+    return next();
+  }
+  res.redirect('/auth/login');
+}
+
 router.get('/', async (req, res) => {
   try {
     const courses = await Course.find();
@@ -44,9 +51,7 @@ router.get('/contact', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
-module.exports = router;
-router.get('/orders', async (req, res) => {
+router.get('/coursesfr', isAdmin, async (req, res) => {
   try {
     const courses = await Course.find();
     // Предположим, что у вас есть объект user, который передается в шаблон
@@ -55,8 +60,8 @@ router.get('/orders', async (req, res) => {
     // Определяем, является ли пользователь администратором
     const isAdmin = user && user.role === 'admin';
 
-    res.render('orders', {
-      title: 'orders',
+    res.render('coursesfr', {
+      title: 'coursesfr',
       isHome: true,
       courses,
       user, // Передаем информацию о пользователе в шаблон
@@ -67,5 +72,6 @@ router.get('/orders', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
 
 module.exports = router;

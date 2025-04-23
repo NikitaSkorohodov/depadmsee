@@ -2,10 +2,21 @@ const { Router } = require('express');
 const Course = require('../models/products');
 const router = Router();
 
-router.get('/', (req, res) => {
+function isAdmin(req, res, next) {
+    if (req.isAuthenticated() && req.user.role === 'admin') {
+      return next();
+    }
+    res.redirect('/auth/login');
+  }
+
+router.get('/', isAdmin, (req, res) => {
+    const user = req.user; 
+    const isAdmin = user && user.role === 'admin';
     res.render('add', {
         title: 'Добавить курс',
-        isAdd: true
+        isAdd: true,
+        user, // Передаем информацию о пользователе в шаблон
+      isAdmin 
     });
 });
 

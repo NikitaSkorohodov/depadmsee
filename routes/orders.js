@@ -5,6 +5,13 @@ const Card = require('../models/card'); // Предполагается, что 
 const Course = require('../models/products');
 const User = require('../models/user'); // Предполагается, что у вас есть модель пользователя
 
+function isAdmin(req, res, next) {
+  if (req.isAuthenticated() && req.user.role === 'admin') {
+    return next();
+  }
+  res.redirect('/auth/login');
+}
+
 // POST /order/checkout - оформление заказа с выбором точки доставки
 router.post('/checkout', async (req, res) => {
   try {
@@ -47,6 +54,10 @@ router.post('/checkout', async (req, res) => {
 
 // GET /orders - отображение списка заказов пользователя
 router.get('/', async (req, res) => {
+  const user = req.user; // Предположим, что информация о пользователе доступна в запросе
+
+    // Определяем, является ли пользователь администратором
+    const isAdmin = user && user.role === 'admin';
   try {
     if (!req.user || !req.user._id) {
       return res.status(401).send('Unauthorized');
@@ -54,41 +65,54 @@ router.get('/', async (req, res) => {
 
     const orders = await Order.find({ user: req.user._id }).populate('user');
 
-    // Преобразуем каждый заказ, чтобы заменить идентификаторы курсов на их названия
     const formattedOrders = await Promise.all(orders.map(async (order) => {
+      // Загружаем все курсы, но безопасно
       const courses = await Promise.all(order.courses.map(async courseId => {
         const course = await Course.findById(courseId);
+        if (!course) {
+          console.warn(`Курс с ID ${courseId} не найден. Возможно, он был удалён.`);
+          return null;
+        }
         return { _id: course._id, title: course.title, price: course.price };
       }));
 
-      // Преобразуем дату в формат строки только с датой
-      const formattedDate = order.date.toDateString();
+      // Удаляем курсы, которые не были найдены (null)
+      const validCourses = courses.filter(course => course !== null);
+
+      const formattedDate = order.date instanceof Date
+        ? order.date.toDateString()
+        : 'Дата отсутствует';
 
       return {
         _id: order._id,
         user: order.user,
-        courses,
+        courses: validCourses,
         totalPrice: order.totalPrice,
-        date: formattedDate, // Передаем отформатированную дату в шаблон
-        deliveryPoint: order.deliveryPoint, // Передаем точку выдачи
+        date: formattedDate,
+        deliveryPoint: order.deliveryPoint,
         __v: order.__v
       };
     }));
 
     res.render('orders', {
       title: 'Ваши заказы',
-      orders: formattedOrders
+      orders: formattedOrders,
+      user, // Передаем информацию о пользователе в шаблон
+      isAdmin 
     });
   } catch (error) {
-    console.error('Error fetching orders:', error);
-    res.status(500).send('Internal Server Error');
+    console.error('Ошибка при получении заказов:', error);
+    res.status(500).send('Внутренняя ошибка сервера');
   }
 });
 
-
 // GET /all-orders - отображение списка всех заказов для всех пользователей
-router.get('/all-orders', async (req, res) => {
+router.get('/all-orders', isAdmin, async (req, res) => {
   try {
+    const user = req.user; // Предположим, что информация о пользователе доступна в запросе
+
+    // Определяем, является ли пользователь администратором
+    const isAdmin = user && user.role === 'admin';
     const orders = await Order.find().populate('user'); // Получение всех заказов с информацией о пользователях
 
     const formattedOrders = await Promise.all(orders.map(async (order) => {
@@ -122,7 +146,9 @@ router.get('/all-orders', async (req, res) => {
 
     res.render('all-orders', {
       title: 'Все заказы',
-      orders: formattedOrders
+      orders: formattedOrders,
+      user, // Передаем информацию о пользователе в шаблон
+      isAdmin 
     });
   } catch (error) {
     console.error('Ошибка получения всех заказов:', error);

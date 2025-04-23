@@ -40,8 +40,16 @@ router.post('/register', async (req, res) => {
 
 // Admin Route for Creating Admins
 router.get('/create-admin', isAdmin, (req, res) => {
-  res.render('create-admin');
-});
+  const user = req.user; // Предположим, что информация о пользователе доступна в запросе
+
+    // Определяем, является ли пользователь администратором
+    const isAdmin = user && user.role === 'admin';
+  res.render('create-admin', { // Ensure you have a corresponding 'ed' template
+    title: 'create-admin',
+    
+    user, // Передаем информацию о пользователе в шаблон
+    isAdmin
+  })});
 
 router.post('/create-admin', isAdmin, async (req, res) => {
   const { username, password } = req.body;
