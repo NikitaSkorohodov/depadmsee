@@ -57,27 +57,33 @@
   </style>
 </head>
 <body>
-  <div class="container" style="height: 1500px; padding: 200px; padding-top: 500px;" >
+  <div class="container" style="min-height: 1500px; padding: 200px; padding-top: 500px;" >
     <h1>{{title}}</h1>
 
     {{#if orders.length}}
       <ul>
-        {{#each orders}}
+  {{#each orders}}
+    <li>
+      <p>Заказ создан: {{date}}</p>
+      <p>Итоговая цена: {{totalPrice}} eur.</p>
+      <p>Точка выдачи: {{deliveryPoint}}</p>
+      <ul>
+        {{#each products}}
           <li>
-            <p>Заказ создан: {{date}}</p>
-            <p>Итоговая цена: {{totalPrice}} eur.</p>
-            <p>Точка выдачи: {{deliveryPoint}}</p> <!-- Добавляем отображение точки выдачи -->
-            <ul>
-              {{#each courses}}
-                <li>
-                  <p>prod: {{this.title}}</p>
-                  <p>Цена: {{this.price}} eur.</p>
-                </li>
-              {{/each}}
-            </ul>
+            <p>prod: {{this.title}}</p>
+            {{#if this.sale}}
+              <p style="color: #080808;">Цена: {{this.sale}} eur.</p>
+            {{/if}}
+            {{#unless this.sale}}
+              <p  style="color: #080808;">Цена: {{this.price}} eur.</p>
+            {{/unless}}
           </li>
         {{/each}}
       </ul>
+    </li>
+  {{/each}}
+</ul>
+
     {{else}}
       <p>У вас пока нет заказов.</p>
     {{/if}}

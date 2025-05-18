@@ -70,7 +70,7 @@
 <body>
   <div class="container">
     <h1>{{title}}</h1>
-    {{#if courses.length}}
+    {{#if products.length}}
       <table>
         <thead>
           <tr>
@@ -80,12 +80,16 @@
           </tr>
         </thead>
         <tbody>
-          {{#each courses}}
+          {{#each products}}
             <tr>
               <td>{{this.title}}</td>
-              <td>{{this.price}} €.</td>
+              {{#if this.sale}}
+  <td class="sale" style="color: #000000;">€{{this.sale}}</td>
+{{else}}
+  <td class="price">{{this.price}}</td>
+{{/if}}
               <td>
-                <button class="delete-button" data-id="{{this._id}}">Удалить</button>
+                <button class="delete-button" data-id="{{this._id}}">X</button>
               </td>
             </tr>
           {{/each}}
@@ -118,18 +122,18 @@
         $('#checkoutButton').prop('disabled', false);
       });
 
-      // Handle course removal
+      // Handle product removal
       $('.delete-button').on('click', function() {
-        const courseId = $(this).data('id');
+        const productId = $(this).data('id');
         $.ajax({
-          url: '/card/remove/' + courseId,
+          url: '/card/remove/' + productId,
           type: 'DELETE',
           success: function(result) {
             location.reload();
           },
           error: function(err) {
-            console.error('Error removing course from card:', err);
-            alert('Ошибка при удалении курса');
+            console.error('Error removing product from card:', err);
+            alert('Ошибка при удалении product');
           }
         });
       });

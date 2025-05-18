@@ -38,6 +38,12 @@
   </div>
 
   <div class="input-field">
+    <input id="sale" name="sale" type="number" class="validate" required  value="{{product.sale}}">
+    <label for="sale">Equipment sale</label>
+    <span class="helper-text" data-error="введите procent sale"></span>
+  </div>
+
+  <div class="input-field">
     <input id="img" name="img" type="text" class="validate" required value="{{product.img}}">
     <label for="img">URL of the image</label>
     <span class="helper-text" data-error="введите URL картинки"></span>
@@ -51,6 +57,26 @@
   <div class="input-field">
     <textarea id="category" name="category" class="materialize-textarea" required>{{product.category}}</textarea>
     <label for="category">Technique category</label>
+    <span class="helper-text" data-error="введите описание"></span>
+  </div>
+  <div class="input-field">
+    <textarea id="gpu" name="gpu" class="materialize-textarea" required>{{product.gpu}}</textarea>
+    <label for="gpu">Technique graphic processor</label>
+    <span class="helper-text" data-error="введите описание"></span>
+  </div>
+  <div class="input-field">
+    <textarea id="cpu" name="cpu" class="materialize-textarea" required>{{product.cpu}}</textarea>
+    <label for="cpu">Technique processor</label>
+    <span class="helper-text" data-error="введите описание"></span>
+  </div>
+  <div class="input-field">
+    <textarea id="rum" name="rum" class="materialize-textarea" required>{{product.rum}}</textarea>
+    <label for="rum">Technique rum</label>
+    <span class="helper-text" data-error="введите описание"></span>
+  </div>
+  <div class="input-field">
+    <textarea id="ssd" name="ssd" class="materialize-textarea" required>{{product.ssd}}</textarea>
+    <label for="ssd">Technique memory</label>
     <span class="helper-text" data-error="введите описание"></span>
   </div>
   

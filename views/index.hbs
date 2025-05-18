@@ -66,13 +66,13 @@
 }
   .card {
              /* Sets the card height */
-    width: 350px;   
+    width: 420px;   
     display: flex;         /* Enables Flexbox for content alignment */
     flex-direction: column; /* Aligns content vertically */
     justify-content: space-between; /* Spaces content evenly */
     overflow: hidden;      /* Ensures content stays within the bounds */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Adds shadow for visual appeal */
-    border-radius: 5px;    /* Optional: Adds rounded corners */
+    border-radius: 15px;    /* Optional: Adds rounded corners */
 }
 .card-image img {
     max-width: 100%; /* Ensures responsiveness */
@@ -126,12 +126,14 @@
     padding: 20px; /* Add padding around the container */
     align-items: center; 
     justify-content: center;
+    font-family: 'Saira-condensed', sans-serif;
 }
 @media only screen and (max-width: 600px) {
     .two-sections {
         flex-direction: column; /* Change layout to column on smaller screens */
         gap: 10px; /* Reduce gap for compact layout */
         align-items: center; /* Center sections vertically for a neat design */
+        font-family: 'Saira-condensed', sans-serif;
     }
 }
 .section {
@@ -190,33 +192,53 @@
     </div>
 </div>
 
-{{#if courses.length}}
+{{#if products.length}}
 <div class="carousel-container">
     <div class="carousel">
-        {{#each courses}}
-        <div class="carousel-slide">
-            <div class="card">
-                <div class="card-image">
-                    <img src="{{img}}" alt="{{title}}">
-                </div>
-                <div class="card-content">
-                    <span class="card-title">{{title}}</span>
-                    <p class="price">{{price}}</p>
-                </div>
-                <div class="card-action actions">
-                    <a href="/courses/{{id}}" target="_blank">{{__ 'more details'}}</a>
-                    <form action="/card/add" method="POST">
-                        <input type="hidden" name="id" value="{{id}}">
-                        <button type="submit" class="btn btn-primary">{{__ 'Buy'}}</button>
-                    </form>
-                    <form action="/favorites/add" method="POST">
-              <input type="hidden" name="courseId" value="{{id}}">
-              <button type="submit" class="btn btn-secondary">like</button>
-            </form>
-                </div>
+        {{#each products}}
+      <div class="prod">
+        <div class="card">
+          <a href="/products/{{id}}" target="_blank" style="color: #000000;">
+          <div class="card-image">
+            <img src="{{img}}" alt="{{title}}">
+          </div>
+          <div class="card-content">
+            <span class="card-title">{{title}}</span>
+            <div style="display: flex;  gap: 20px; justify-content: center;">
+            {{#if sale}}
+  <p class="sale" style="color: #ff0101;">€{{sale}}</p>
+  <p style="font-size: 18px; text-decoration: line-through;" class="price">{{price}}</p>
+{{else}}
+  <p class="price">{{price}}</p>
+{{/if}}
+
+
             </div>
+            <div style="display: flex;  gap: 20px; justify-content: center; align-items: center;  padding-top: 10px; ">
+            <div>
+            <p>gpu {{gpu}}</p>
+            <p>cpu {{cpu}}</p>
+            </div>
+             <div>
+            <p>rum {{rum}}</p>
+            <p>ssd {{ssd}}</p>
+            </div>
+            </div>
+          </div>
+          </a>
+          <div class="card-action actions">
+            <form action="/card/add" method="POST" style="display:inline;">
+              <input type="hidden" name="id" value="{{id}}">
+              <button type="submit" class="btn btn-primary">{{__ 'Buy'}}</button>
+            </form>
+            <form action="/favorites/add" method="POST">
+              <input type="hidden" name="productId" value="{{id}}">
+              <button type="submit" class="likebtn">♥</button>
+            </form>
+          </div>
         </div>
-        {{/each}}
+      </div>
+    {{/each}}
     </div>
 </div>
 
@@ -229,14 +251,12 @@
   <div class="two-sections">
     <div class="section" style="background-image: url('/mbg1.png');">
         <h2>FOR GAMERS</h2>
-        <p>Description for section 1.</p>
         <a href="/products?priceMin=&priceMax=&category=for+gamers&gpu=&cpu=&rum=&ssd=">
     <button type="submit" class="linkbtn">FIND</button>
 </a>
     </div>
     <div class="section1" style="background-image: url('/mbg2.png');">
         <h2>FOR STUDENTS</h2>
-        <p>Description for section 2.</p>
         <a href="/products?priceMin=&priceMax=&category=for+students&gpu=&cpu=&rum=&ssd=">
     <button type="submit" class="linkbtn">FIND</button>
 </a>
@@ -245,14 +265,12 @@
  <div class="two-sections">
     <div class="section1" style="background-image: url('/mbg3.png');">
         <h2>FOR WORK</h2>
-        <p>Description for section 1.</p>
         <a href="/add">
     <button type="submit" class="linkbtn">FIND</button>
 </a>
     </div>
     <div class="section" style="background-image: url('/mbg4.png');">
         <h2>FOR PRO</h2>
-        <p>Description for section 2.</p>
         <a href="/add">
     <button type="submit" class="linkbtn">FIND</button>
 </a>

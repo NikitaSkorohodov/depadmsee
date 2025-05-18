@@ -47,10 +47,11 @@
             </form>
             <p>Заказ создан: {{date}}</p>
             <p>Пользователь: {{user.username}}</p>
+            <p>email: {{user.email}}</p>
             <p>Итоговая цена: {{totalPrice}} eur.</p>
             <p>Точка выдачи: {{deliveryPoint}}</p> <!-- Добавляем отображение точки выдачи -->
             <ul class="course-list">
-              {{#each courses}}
+              {{#each products}}
                 <li class="course-item">
                   <p>product: {{this.title}}</p>
                   <p>price: {{this.price}} eur.</p>

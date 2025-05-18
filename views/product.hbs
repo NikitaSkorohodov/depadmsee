@@ -14,8 +14,43 @@
   font-family: Arial, sans-serif;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%; /* Make it responsive */
-  max-width: 700px; /* Set a maximum width */
+  max-width: 1300px; /* Set a maximum width */
   font-size: 20px;
+}
+.component-card h3 {
+  font-weight: bold;
+  color: #EFAD12;
+  font-family: Arial, sans-serif;
+  font-size: 45px;
+}
+.component-cardy {
+  padding: 20px;
+  margin: 10px;
+  border-radius: 8px;
+  color: white;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Make it responsive */
+  max-width: 1300px; /* Set a maximum width */
+  font-size: 20px;
+}
+.component-cardy h3 {
+  font-weight: bold;
+  color: #6F2FCE;
+  font-family: Arial, sans-serif;
+  font-size: 45px;
+}
+.component-card p {
+  font-weight: bold;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  font-size: 75px;
+}
+.component-cardy p {
+  font-weight: bold;
+  color: #060606;
+  font-family: Arial, sans-serif;
+  font-size: 75px;
 }
 
 /* Responsive styles for screens smaller than 768px */
@@ -39,26 +74,26 @@
 
 /* Purple for GPU */
 .gpu {
-  background-color: #0dad22; /* Purple */
+  background-color: #6F2FCE; /* Purple */
   text-align: left; /* Align content horizontally to the right */
 }
 
 /* Blue for CPU */
 .cpu {
-  background-color: #007bff; /* Blue */
+  background-color: #EFAD12; /* Blue */
   text-align: right;
 }
 
 /* Yellow for RAM */
 .ram {
-  background-color: #ffcc00; /* Yellow */
-  color: black; /* Text color should be dark for yellow background */
+  background-color: #6F2FCE; /* Yellow */
+  color: rgb(255, 254, 254); /* Text color should be dark for yellow background */
   text-align: left;
 }
 
 /* Green for SSD */
 .ssd {
-  background-color: #c91148; /* Green */
+  background-color: #EFAD12; /* Green */
   text-align: right;
 }
 
@@ -84,8 +119,11 @@
 
     .course .price {
       font-size: 50px;
-      color: #f00;
+      color: rgb(0, 0, 0);
       margin-bottom: 20px;
+    }
+     .sale {
+      font-size: 50px;
     }
 
     .comments {
@@ -172,12 +210,21 @@
 <body>
 
 <div class="course">
-<div class="info" style="display: flex; align-items: center; padding-top: 200px;">
+<div class="info" style="display: flex; align-items: center; padding-top: 200px; padding-bottom: 50px;">
   <img src="{{product.img}}" alt="{{product.title}}" style="flex: 1; margin-right: 20px;">
   <div style="flex: 2;">
-    <h1>{{product.title}}</h1>
-    <p class="price">{{product.price}}</p>
-    <p>{{product.description}}</p> <!-- Добавлено описание товара -->
+    <h1 style="color: #020034; font-size: 70px; font-weight: bold; font-family: Arial, sans-serif; text-transform: uppercase;">{{product.title}}</h1>
+    <div style="display: flex;  gap: 20px; ">
+            {{#if product.sale}}
+  <p class="sale" style="color: #ff0101; font-weight: bold; font-family: Arial, sans-serif; text-transform: uppercase;">€{{product.sale}}</p>
+  <p style="font-size: 18px; text-decoration: line-through;" class="price">{{product.price}}</p>
+{{else}}
+  <p class="price" style="color: #020034; font-weight: bold; font-family: Arial, sans-serif; text-transform: uppercase;">{{product.price}}</p>
+{{/if}}
+
+
+            </div>
+    <p style="color: #020034; font-size: 46px;  font-family: Arial, sans-serif;">{{product.description}}</p> <!-- Добавлено описание товара -->
      <div style="display: flex; align-items: center; padding-top: 20px;">
     <form action="/card/add" method="POST" style="display:inline;">
               <input type="hidden" name="id" value="{{product._id}}">
@@ -185,30 +232,53 @@
             </form>
             <form action="/favorites/add" method="POST">
               <input type="hidden" name="courseId" value="{{product._id}}">
-              <button type="submit" class="btn btn-secondary">like</button>
+              <button type="submit" class="likebtn">♥</button>
             </form>
             </div>
   </div>
 </div>
-<div class="components" style="width: 100%; justify-items: center; background-color: #6a0dad; padding-top: 50px; padding-bottom: 50px;">
-    <div class="component-card gpu">
-  <h3>GPU</h3>
-  <p>{{product.gpu}}</p>
+<div class="components" style="width: 100%; justify-items: center; background-color: #000000; padding-top: 50px; padding-bottom: 50px;">
+   <div class="component-card gpu" style="display: flex; align-items: center;  padding: 20px; border-radius: 10px;">
+    <div style="flex: 1; color: white; padding-right: 20px;">
+        <h3>graphics</h3>
+        <p>{{product.gpu}}</p>
+    </div>
+    <div style="flex: 1; text-align: right;">
+        <img src="/gpu.png" alt="GPU Image" style="max-width: 100%; height: auto; border-radius: 10px;">
+    </div>
 </div>
 
-<div class="component-card cpu">
-  <h3>CPU</h3>
-  <p>{{product.cpu}}</p>
+
+<div class="component-cardy cpu" style="display: flex; align-items: center;  padding: 20px; border-radius: 10px;">
+    
+    <div style="flex: 1; text-align: right;">
+        <img src="/cpu.png" alt="GPU Image" style="max-width: 100%; height: auto; border-radius: 10px;">
+    </div>
+    <div style="flex: 1; color: white; padding-right: 20px;">
+        <h3>processor</h3>
+        <p>{{product.cpu}}</p>
+    </div>
 </div>
 
-<div class="component-card ram">
-  <h3>RAM</h3>
-  <p>{{product.rum}}</p>
+<div class="component-card ram" style="display: flex; align-items: center;  padding: 20px; border-radius: 10px;">
+    <div style="flex: 1; color: white; padding-right: 20px;">
+        <h3>rum</h3>
+        <p>{{product.rum}}</p>
+    </div>
+    <div style="flex: 1; text-align: right;">
+        <img src="/rum.png" alt="GPU Image" style="max-width: 100%; height: auto; border-radius: 10px;">
+    </div>
 </div>
 
-<div class="component-card ssd">
-  <h3>SSD</h3>
-  <p>{{product.ssd}}</p>
+<div class="component-cardy ssd" style="display: flex; align-items: center;  padding: 20px; border-radius: 10px;">
+    
+    <div style="flex: 1; text-align: right;">
+        <img src="/ssd.png" alt="GPU Image" style="max-width: 100%; height: auto; border-radius: 10px;">
+    </div>
+    <div style="flex: 1; color: white; padding-right: 20px;">
+        <h3>memory</h3>
+        <p>{{product.ssd}}</p>
+    </div>
 </div>
 
 </div>
@@ -227,7 +297,7 @@
   </div>
 
   <div class="add-comment" style="width: 50%;">
-    <h3>Добавить комментарий</h3>
+    <h3 style="color: #fff;">Добавить комментарий</h3>
     {{#if user}}
     <form id="commentForm" >
       <input type="hidden" id="user" name="user" value="{{user.username}}"> <!-- Автоматически заполненное имя пользователя -->
@@ -236,7 +306,7 @@
       <button type="submit">Отправить</button>
     </form>
     {{else}}
-    <p>Пожалуйста, <a href="/login">войдите</a>, чтобы оставить комментарий.</p>
+    <p style="color: #fff;">Пожалуйста, <a href="/login">войдите</a>, чтобы оставить комментарий.</p>
     {{/if}}
   </div>
 </div>

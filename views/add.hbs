@@ -5,8 +5,20 @@
   <title>{{__ 'add_course'}}</title>
   
 </head>
+<Style>
+.section{
+  padding-left: 500px;
+  padding-right: 500px;
+}
+  @media (max-width: 768px) {
+   .section{
+  padding-left: 50px;
+  padding-right: 50px;
+}
+  }
+</Style>
 <body>
-  <div style=" padding-top: 300px;">
+  <div class="section" style=" padding-top: 300px;">
   <h1>{{__ 'add_course'}}</h1>
 
   <form action="/add" method="POST">
@@ -17,9 +29,14 @@
     </div>
 
     <div class="input-field">
-      <input id="price" name="price" type="number" class="validate" required min="1">
+      <input id="price" name="price" type="number" step="0.01" class="validate" required min="1">
       <label for="price">{{__ 'price'}}</label>
       <span class="helper-text" data-error="Enter price"></span>
+    </div>
+    <div class="input-field">
+      <input id="sale" name="sale" type="number" step="0.01" class="validate" required min="0" value="0">
+      <label for="sale">{{__ 'sale'}}</label>
+      <span class="helper-text" data-error="Enter sale"></span>
     </div>
 
     <div class="input-field">

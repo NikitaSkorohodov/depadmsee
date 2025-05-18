@@ -1,6 +1,9 @@
 .nav-warapper{
     padding: 0 2rem;
 }
+.h2{
+  font-family: 'Saira-condensed', sans-serif;
+}
 @media only screen and (max-width: 992px) {
   nav .brand-logo {
     left: 0% !important;
@@ -27,11 +30,13 @@
 .butsel:hover {
   color: #000000;
   background-color: #6b6b6b;
+  font-family: 'Saira-condensed', sans-serif;
 }
 .linkbtn {
   
   color: #330057;
-  background-color: #eee209;
+  background-color: #EFAD12;
+  font-family: 'Saira-condensed', sans-serif;
   border-radius: 30px;
   font-size: 30px;
   padding: 10px;
@@ -41,18 +46,37 @@
 }
 .btn, .btn-large, .btn-small {
   
-  color: #eeee09;
+  color: #ffffff;
   background-color: #4f0088;
-  border-radius: 12px;
+  font-family: 'Saira-condensed', sans-serif;
+  border-radius: 30px;
+  padding-left: 30px;
+  padding-right: 30px;
+  font-size: 20px;
   
 }
-.btn:hover {
+.card-title {
+    text-align: center;
+    display: block; /* Ensures proper alignment */
+    font-family: 'Saira-condensed', sans-serif;
+}
+.likebtn {
+  
+  color: #ffffff;
+  background-color: #4f0088;
+  border-radius: 90px;
+  font-size: 30px;
+  
+}
+.btn:hover, .likebtn:hover {
   color: #4f0088;
-  background-color: #eeee09;
+  background-color: #EFAD12;
+  font-family: 'Saira-condensed', sans-serif;
 }
 .btn i:hover {
   color: #4f0088;
-  background-color: #eeee09;
+  background-color: #EFAD12;
+  font-family: 'Saira-condensed', sans-serif;
 }
 .container {
   /* margin: 0 auto; */
@@ -80,6 +104,12 @@
 }
 .course .price.big{
     font-size: 2.5rem;
+}
+.price, .sale{
+  font-size: 2rem;
+}
+.course .price.big{
+  font-size: 2.5rem;
 }
 /* Hide nav2 on larger screens (desktop/tablet) */
 @media only screen and (min-width: 992px) {
@@ -120,6 +150,8 @@
     text-align: center;             /* Optional: Centers the text inside */
     color: #fff; 
     height: 106px;                   /* Optional: Makes the text white */
+    font-weight: bold;
+    font-family: 'Arial', sans-serif;
 }
 .z-depth-1, nav, .card-panel, .card, .toast, .btn, .btn-large, .btn-small, .btn-floating, .dropdown-content, .collapsible, .sidenav {
   -webkit-box-shadow: none;
@@ -212,7 +244,9 @@
     background-color:#ffffff;
 }
 
-
+.p{
+  font-family: 'Saira-condensed', sans-serif;
+}
 
 .prev {
     left: 0;

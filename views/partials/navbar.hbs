@@ -6,13 +6,14 @@
         justify-content: center;
     }
 #nav-mobile-a {
+  font-weight: bold;
     display: none; /* Hide menu by default */
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(70, 2, 158, 0.9); /* Fullscreen dark overlay */
+    background-color:#6F2FCE; /* Fullscreen dark overlay */
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -20,14 +21,16 @@
 }
 
 #nav-mobile-a a {
+  font-weight: bold;
     color: white;
     margin: 20px 0;
     text-decoration: none;
     font-size: 24px;
+    font-family: 'Saira-condensed', sans-serif;
 }
 
 .nav-wrapper {
-  background-color: #820096;
+  background-color: #6F2FCE;
   width: 95%;
    /* по желанию, ограничение на ширину */
   margin: 0 auto;
@@ -79,13 +82,18 @@
       {{else}}
         <li id="desck"><a href="/contact">{{__ 'CONTACT'}}</a></li>
       {{/if}}
+      {{#if isAbout}}
+        <li id="desck" class="active" ><a href="/about">{{__ 'ABOUT US'}}</a></li>
+      {{else}}
+        <li id="desck"><a href="/about">{{__ 'ABOUT US'}}</a></li>
+      {{/if}}
       <ul id="nav-mobile" style="margin-left: auto;">
   {{#if user}}
     <li id="desck">
       <a href="/orders" style="color: white;">Welcome, {{user.username}}</a>
     </li>
     {{#if isAdmin}}
-      <li id="desck"><a href="/coursesfr">{{__ 'ADMIN panel'}}</a></li>
+      <li id="desck"><a href="/admpanel">{{__ 'ADMIN panel'}}</a></li>
     {{/if}}
     <li id="desck"><a href="/card">{{__ 'CARD'}}</a></li>
     <li id="desck"><a href="/favorites">{{__ 'FAVORITE'}}</a></li>
@@ -103,7 +111,7 @@
       </li>
       <li id="desck">
         <a href="/?lang=et" class="circle-img" style="display: flex; align-items: center; ">
-          <img src="https://upload.wikimedia.org/wikipedia/en/f/f3/Flag_of_Russia.svg" alt="Russian" style="width: 50px; height: 50px; border-radius: 50%;">
+          <img src="/est.png" alt="Russian" style="width: 50px; height: 50px; border-radius: 50%;">
         </a>
       </li>
        <button class="mobile-menu-button" onclick="toggleMenu()">Menu</button>
@@ -113,7 +121,7 @@
       <a href="/orders" style="color: white;">Welcome, {{user.username}}</a>
     </li>
     {{#if isAdmin}}
-      <li><a href="/coursesfr">{{__ 'ADMIN PANEL'}}</a></li>
+      <li><a href="/admpanel">{{__ 'ADMIN PANEL'}}</a></li>
     {{/if}}
     <li><a href="/">{{__ 'MAIN'}}</a></li>
     <li><a href="/products">{{__ 'PRODUCTS'}}</a></li>

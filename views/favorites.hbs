@@ -8,14 +8,18 @@
 <body>
   <div class="container" style="padding-top: 200px;">
     <h1>{{title}}</h1>
-    {{#if courses.length}}
+    {{#if products.length}}
       <ul>
-        {{#each courses}}
+        {{#each products}}
           <li>
             <p>product: {{this.title}}</p>
-            <p>price: {{this.price}} eur.</p>
+             {{#if this.sale}}
+  <td class="sale" style="color: #000000;">€{{this.sale}}</td>
+{{else}}
+  <td class="price">{{this.price}}</td>
+{{/if}}
             <form action="/favorites/remove" method="POST">
-              <input type="hidden" name="courseId" value="{{this._id}}">
+              <input type="hidden" name="productId" value="{{this._id}}">
               <button type="submit">Удалить из понравившихся</button>
             </form>
              <form action="/card/add" method="POST" style="display:inline;">
@@ -26,7 +30,7 @@
         {{/each}}
       </ul>
     {{else}}
-      <p>У вас пока нет понравившихся курсов.</p>
+      <p>У вас пока нет понравившихся products.</p>
     {{/if}}
   </div>
 </body>
