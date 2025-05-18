@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Order = require('../models/order');
 const Card = require('../models/card'); // Предполагается, что у вас есть модель корзины
-const Course = require('../models/products');
+const Product = require('../models/products');
 const User = require('../models/user'); // Предполагается, что у вас есть модель пользователя
 
 function isAdmin(req, res, next) {
@@ -27,15 +27,15 @@ router.post('/checkout', async (req, res) => {
     }
 
     const card = await Card.fetchByUser(userId);
-    if (!card || card.courses.length === 0) {
-      return res.status(400).send('В корзине нет курсов');
+    if (!card || card.products.length === 0) {
+      return res.status(400).send('В корзине нет product');
     }
 
-    const totalPrice = card.courses.reduce((acc, course) => acc + course.price, 0);
+    const totalPrice = card.products.reduce((acc, product) => acc + product.price, 0);
 
     const newOrder = new Order({
       user: userId,
-      courses: card.courses,
+      products: card.products,
       totalPrice: totalPrice,
       deliveryPoint: deliveryPoint
     });
@@ -67,17 +67,17 @@ router.get('/', async (req, res) => {
 
     const formattedOrders = await Promise.all(orders.map(async (order) => {
       // Загружаем все курсы, но безопасно
-      const courses = await Promise.all(order.courses.map(async courseId => {
-        const course = await Course.findById(courseId);
-        if (!course) {
-          console.warn(`Курс с ID ${courseId} не найден. Возможно, он был удалён.`);
+      const products = await Promise.all(order.products.map(async productId => {
+        const product = await Product.findById(productId);
+        if (!product) {
+          console.warn(`products с ID ${productId} не найден. Возможно, он был удалён.`);
           return null;
         }
-        return { _id: course._id, title: course.title, price: course.price };
+        return { _id: product._id, title: product.title, price: product.price, sale: product.sale };
       }));
 
       // Удаляем курсы, которые не были найдены (null)
-      const validCourses = courses.filter(course => course !== null);
+      const validProducts = products.filter(product => product !== null);
 
       const formattedDate = order.date instanceof Date
         ? order.date.toDateString()
@@ -86,7 +86,7 @@ router.get('/', async (req, res) => {
       return {
         _id: order._id,
         user: order.user,
-        courses: validCourses,
+        products: validProducts,
         totalPrice: order.totalPrice,
         date: formattedDate,
         deliveryPoint: order.deliveryPoint,
@@ -116,16 +116,16 @@ router.get('/all-orders', isAdmin, async (req, res) => {
     const orders = await Order.find().populate('user'); // Получение всех заказов с информацией о пользователях
 
     const formattedOrders = await Promise.all(orders.map(async (order) => {
-      const courses = await Promise.allSettled(order.courses.map(async (courseId) => {
-        const course = await Course.findById(courseId);
-        if (!course) {
-          console.error(`Курс с ID ${courseId} не найден.`);
+      const products = await Promise.allSettled(order.products.map(async (productId) => {
+        const product = await Product.findById(productId);
+        if (!product) {
+          console.error(`product с ID ${productId} не найден.`);
           return null;
         }
-        return { _id: course._id, title: course.title, price: course.price };
+        return { _id: product._id, title: product.title, price: product.price };
       }));
 
-      const validCourses = courses
+      const validProducts = products
         .filter(result => result.status === "fulfilled" && result.value !== null)
         .map(result => result.value);
 
@@ -136,7 +136,7 @@ router.get('/all-orders', isAdmin, async (req, res) => {
       return {
         _id: order._id,
         user: order.user || { username: "Неизвестный пользователь" },
-        courses: validCourses,
+        products: validProducts,
         totalPrice: order.totalPrice,
         date: formattedDate,
         deliveryPoint: order.deliveryPoint,

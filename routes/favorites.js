@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Favorite = require('../models/favorite');
-const Course = require('../models/products');
+const Product = require('../models/products');
 
 // Middleware для проверки аутентификации
 function isAuthenticated(req, res, next) {
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
     const favorite = await Favorite.fetchByUser(req.user._id);
     res.render('favorites', {
       title: 'Ваши понравившиеся курсы',
-      courses: favorite ? favorite.courses : []
+      products: favorite ? favorite.products : []
     });
   } catch (error) {
     console.error('Error fetching favorites:', error);
@@ -32,17 +32,17 @@ router.get('/', async (req, res) => {
 // POST /favorites/add - добавить курс в понравившиеся
 router.post('/add', async (req, res) => {
     try {
-      const { courseId } = req.body;
-      if (!courseId) {
-        return res.status(400).send('Course ID is required');
+      const { productId } = req.body;
+      if (!productId) {
+        return res.status(400).send('Product ID is required');
       }
   
-      const course = await Course.findById(courseId);
-      if (!course) {
-        return res.status(404).send('Course not found');
+      const product = await Product.findById(productId);
+      if (!product) {
+        return res.status(404).send('Product not found');
       }
   
-      await Favorite.add(req.user._id, course);
+      await Favorite.add(req.user._id, product);
       res.redirect('/favorites');
     } catch (error) {
       console.error('Error adding to favorites:', error);
@@ -54,8 +54,8 @@ router.post('/add', async (req, res) => {
 // POST /favorites/remove - удалить курс из понравившихся
 router.post('/remove', async (req, res) => {
   try {
-    const { courseId } = req.body;
-    await Favorite.remove(req.user._id, courseId);
+    const { productId } = req.body;
+    await Favorite.remove(req.user._id, productId);
     res.redirect('/favorites');
   } catch (error) {
     console.error('Error removing from favorites:', error);

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Card = require('../models/card');
-const Course = require('../models/products');
+const Product = require('../models/products');
 const Order = require('../models/order');
 
 // Middleware to set user status in response locals
@@ -20,26 +20,26 @@ function isAuthenticated(req, res, next) {
 // Применение middleware ко всем маршрутам в этом роутере
 router.use(isAuthenticated);
 
-// Add course to cart
+// Add Product to cart
 router.post('/add', async (req, res) => {
   try {
     if (!req.user) {
       return res.status(401).send('Unauthorized');
     }
     const userId = req.user._id;
-    const course = await Course.findById(req.body.id);
-    if (!course) {
-      return res.status(404).send('Course not found');
+    const product = await Product.findById(req.body.id);
+    if (!product) {
+      return res.status(404).send('product not found');
     }
-    await Card.add(userId, course);
+    await Card.add(userId, product);
     res.redirect('/card');
   } catch (error) {
-    console.error('Error adding course to cart:', error);
+    console.error('Error adding product to cart:', error);
     res.status(500).send('Internal Server Error');
   }
 });
 
-// Remove course from cart
+// Remove product from cart
 router.delete('/remove/:id', async (req, res) => {
   try {
     if (!req.user) {
@@ -49,8 +49,8 @@ router.delete('/remove/:id', async (req, res) => {
     const card = await Card.remove(userId, req.params.id);
     res.status(200).json(card);
   } catch (error) {
-    console.error('Error removing course from cart:', error);
-    res.status(500).json({ error: 'Failed to remove course from cart' });
+    console.error('Error removing product from cart:', error);
+    res.status(500).json({ error: 'Failed to remove product from cart' });
   }
 });
 
@@ -63,8 +63,11 @@ router.get('/', async (req, res) => {
     const card = await Card.fetchByUser(userId);
     let totalPrice = 0;
 
-    if (card && card.courses.length > 0) {
-      totalPrice = card.courses.reduce((acc, course) => acc + course.price, 0);
+    if (card && card.products.length > 0) {
+       totalPrice = card.products.reduce((acc, product) => {
+        return acc + (product.sale ? product.sale : product.price);
+      }, 0);
+      ce = card.products.reduce((acc, product) => acc + product.price, 0);
     }
 
     // Define static delivery points
@@ -77,7 +80,7 @@ router.get('/', async (req, res) => {
     res.render('card', {
       title: 'Корзина',
       isCard: true,
-      courses: card ? card.courses : [],
+      products: card ? card.products : [],
       totalPrice: totalPrice,
       deliveryPoints: deliveryPoints
     });
@@ -101,11 +104,13 @@ router.post('/checkout', async (req, res) => {
     }
 
     const card = await Card.fetchByUser(userId);
-    if (!card || card.courses.length === 0) {
-      return res.status(400).send('No courses in cart');
+    if (!card || card.products.length === 0) {
+      return res.status(400).send('No products in cart');
     }
 
-    const totalPrice = card.courses.reduce((acc, course) => acc + course.price, 0);
+    const totalPrice = card.products.reduce((acc, product) => {
+      return acc + (product.sale ? product.sale : product.price);
+    }, 0);
 
     // Ensure deliveryPoint is a string and not empty
     if (typeof deliveryPoint !== 'string' || !deliveryPoint.trim()) {
@@ -114,7 +119,7 @@ router.post('/checkout', async (req, res) => {
 
     const newOrder = new Order({
       user: userId,
-      courses: card.courses,
+      products: card.products,
       totalPrice: totalPrice,
       deliveryPoint: deliveryPoint
     });

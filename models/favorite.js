@@ -6,10 +6,11 @@ const favoriteSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  courses: [
+  products: [
     {
       title: String,
       price: Number,
+      sale: Number,
       img: String
     }
   ]
@@ -19,26 +20,26 @@ favoriteSchema.statics.fetchByUser = async function(userId) {
   return this.findOne({ user: userId });
 };
 
-favoriteSchema.statics.add = async function(userId, course) {
+favoriteSchema.statics.add = async function(userId, product) {
   let favorite = await this.findOne({ user: userId });
   if (!favorite) {
     favorite = new this({ user: userId });
   }
-  favorite.courses.push(course);
+  favorite.products.push(product);
   await favorite.save();
   return favorite;
 };
 
-favoriteSchema.statics.remove = async function(userId, courseId) {
+favoriteSchema.statics.remove = async function(userId, productId) {
   let favorite = await this.findOne({ user: userId });
   if (!favorite) {
     throw new Error("Favorites not found");
   }
-  const index = favorite.courses.findIndex(course => course._id.toString() === courseId);
+  const index = favorite.products.findIndex(product => product._id.toString() === productId);
   if (index === -1) {
-    throw new Error("Course not found in favorites");
+    throw new Error("product not found in favorites");
   }
-  favorite.courses.splice(index, 1);
+  favorite.products.splice(index, 1);
   await favorite.save();
   return favorite;
 };

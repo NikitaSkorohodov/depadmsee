@@ -6,10 +6,11 @@ const cardSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  courses: [
+  products: [
     {
       title: String,
       price: Number,
+      sale: Number,
       img: String
     }
   ],
@@ -23,28 +24,28 @@ cardSchema.statics.fetchByUser = async function(userId) {
   return this.findOne({ user: userId });
 };
 
-cardSchema.statics.add = async function(userId, course) {
+cardSchema.statics.add = async function(userId, product) {
   let card = await this.findOne({ user: userId });
   if (!card) {
     card = new this({ user: userId });
   }
-  card.courses.push(course);
-  card.totalPrice += course.price;
+  card.products.push(product);
+  card.totalPrice += product.price;
   await card.save();
   return card;
 };
 
-cardSchema.statics.remove = async function(userId, courseId) {
+cardSchema.statics.remove = async function(userId, productId) {
   let card = await this.findOne({ user: userId });
   if (!card) {
     throw new Error("Card not found");
   }
-  const index = card.courses.findIndex(course => course._id.toString() === courseId);
+  const index = card.products.findIndex(product => product._id.toString() === productId);
   if (index === -1) {
-    throw new Error("Course not found in card");
+    throw new Error("product not found in card");
   }
-  const removedCourse = card.courses.splice(index, 1)[0];
-  card.totalPrice -= removedCourse.price;
+  const removedProduct = card.products.splice(index, 1)[0];
+  card.totalPrice -= removedProduct.price;
   await card.save();
   return card;
 };

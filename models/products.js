@@ -10,6 +10,10 @@ const productSchema = new Schema({
     type: Number,
     required: true
   },
+  sale: {
+    type: Number,
+    required: true
+  },
   img: String,
   description: String,
   category: String,

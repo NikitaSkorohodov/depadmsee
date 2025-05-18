@@ -85,6 +85,8 @@ router.get('/ed', isAdmin, async (req, res) => {
     const category = req.query.category;
     const gpu = req.query.gpu;
     const cpu = req.query.cpu;
+    const rum = req.query.rum;
+    const ssd = req.query.ssd;
     const priceMin = req.query.priceMin ? parseFloat(req.query.priceMin) : null;
     const priceMax = req.query.priceMax ? parseFloat(req.query.priceMax) : null;
 
@@ -92,6 +94,8 @@ router.get('/ed', isAdmin, async (req, res) => {
     const gpus = await Product.distinct('gpu');
     const categorys = await Product.distinct('category');
     const cpus = await Product.distinct('cpu');
+    const rums = await Product.distinct('rum');
+      const ssds = await Product.distinct('ssd');
 
     // Build the search query
     let query = {};
@@ -106,6 +110,8 @@ router.get('/ed', isAdmin, async (req, res) => {
     if (category) query.category = category;
     if (gpu) query.gpu = gpu;
     if (cpu) query.cpu = cpu;
+    if (rum) query.rum = rum;
+      if (ssd) query.ssd = ssd;
     if (priceMin) query.price = { $gte: priceMin };
     if (priceMax) query.price = { ...query.price, $lte: priceMax };
 
@@ -116,8 +122,10 @@ router.get('/ed', isAdmin, async (req, res) => {
       isProducts: true,
       products,
       categorys,
-      cpus,
-      gpus,
+      ssds,
+        cpus,
+        gpus,
+        rums,
       user, // Передаем информацию о пользователе в шаблон
       isAdmin
     });

@@ -1,5 +1,5 @@
 const { Router } = require('express');
-const Course = require('../models/products');
+const Product = require('../models/products');
 const router = Router();
 
 function isAdmin(req, res, next) {
@@ -21,19 +21,20 @@ router.get('/', isAdmin, (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    const course = new Course({
+    const product = new Product({
         title: req.body.title,
         price: req.body.price, 
+        sale: req.body.sale, 
         img: req.body.img,
-        description: req.body.description, // Добавляем описание курса
+        description: req.body.description, 
         gpu: req.body.gpu,
         cpu: req.body.cpu,
         rum: req.body.rum,
         ssd: req.body.ssd,
-        category: req.body.category // Добавляем категорию курса
+        category: req.body.category
     });
     try { 
-        await course.save();
+        await product.save();
         res.redirect('/products')
     } catch (e){
         console.log(e)
