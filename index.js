@@ -13,7 +13,6 @@ const bodyParser = require('body-parser');
 const ordersRoutes = require('./routes/orders');
 const favoritesRouter = require('./routes/favorites');
 
-// Passport Config
 require('./config/passport');
 
 const homeRoutes = require('./routes/home');
@@ -24,7 +23,6 @@ const authRoutes = require('./routes/auth');
 
 const app = express();
 
-// Set strictQuery option
 mongoose.set('strictQuery', false); // Change to true if you want strict queries
 
 app.use(cookieParser());
