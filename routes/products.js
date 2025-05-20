@@ -8,13 +8,11 @@ function isAdmin(req, res, next) {
   }
   res.redirect('/auth/login');
 }
-// GET /products - отображение списка курсов
+
 router.get('/', async (req, res) => {
   try {
     const products = await Product.find();
-    const user = req.user; // Предположим, что информация о пользователе доступна в запросе
-
-    // Определяем, является ли пользователь администратором
+    const user = req.user; 
     const isAdmin = user && user.role === 'admin';
     try {
       const searchTerm = req.query.q;
@@ -25,24 +23,18 @@ router.get('/', async (req, res) => {
       const ssd = req.query.ssd;
       const priceMin = req.query.priceMin ? parseFloat(req.query.priceMin) : null;
       const priceMax = req.query.priceMax ? parseFloat(req.query.priceMax) : null;
-  
-      // Fetch distinct values for filters
       const gpus = await Product.distinct('gpu');
       const categorys = await Product.distinct('category');
       const cpus = await Product.distinct('cpu');
       const rums = await Product.distinct('rum');
       const ssds = await Product.distinct('ssd');
-  
-      // Build the search query
       let query = {};
-  
       if (searchTerm && typeof searchTerm === 'string' && searchTerm.trim() !== '') {
         query.$or = [
           { title: { $regex: searchTerm, $options: 'i' } },
           { description: { $regex: searchTerm, $options: 'i' } }
         ];
       }
-  
       if (category) query.category = category;
       if (gpu) query.gpu = gpu;
       if (cpu) query.cpu = cpu;
@@ -50,11 +42,9 @@ router.get('/', async (req, res) => {
       if (ssd) query.ssd = ssd;
       if (priceMin) query.price = { $gte: priceMin };
       if (priceMax) query.price = { ...query.price, $lte: priceMax };
-  
       const products = await Product.find(query);
-  
-      res.render('products', { // Ensure you have a corresponding 'ed' template
-        title: 'Результаты поиска',
+      res.render('products', { 
+        title: 'products',
         isProducts: true,
         products,
         categorys,
@@ -62,7 +52,7 @@ router.get('/', async (req, res) => {
         cpus,
         gpus,
         rums,
-        user, // Передаем информацию о пользователе в шаблон
+        user, 
         isAdmin
       });
     } catch (error) {
@@ -118,7 +108,7 @@ router.get('/ed', isAdmin, async (req, res) => {
     const products = await Product.find(query);
 
     res.render('edit', { // Ensure you have a corresponding 'ed' template
-      title: 'Результаты поиска',
+      title: 'products',
       isProducts: true,
       products,
       categorys,
@@ -175,7 +165,7 @@ router.get('/search', async (req, res) => {
     const products = await Product.find(query);
 
     res.render('search', {
-      title: 'Результаты поиска',
+      title: 'products',
       isProducts: true,
       products,
       categorys,

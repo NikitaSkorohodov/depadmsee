@@ -1,4 +1,25 @@
 <style>
+  .mobile-menu-button {
+  display: none;              /* Hidden by default (shown only on small screens via media query) */
+  flex-direction: column;     
+  justify-content: space-between;
+  width: 30px;
+  height: 22px;
+  cursor: pointer;
+  margin-right: 20px;
+  z-index: 11;                /* Above the menu */
+  gap: 6px;
+}
+
+.mobile-menu-button span {
+  display: block;
+  height: 8px;
+  width: 100%;
+  background-color: white;
+  border-radius: 2px;
+  margin-bottom: 4px;
+}
+
 .nav2 {
         
         
@@ -90,7 +111,7 @@
       <ul id="nav-mobile" style="margin-left: auto;">
   {{#if user}}
     <li id="desck">
-      <a href="/orders" style="color: white;">Welcome, {{user.username}}</a>
+      <a href="/orders" style="color: white;">ORDERS, {{user.username}}</a>
     </li>
     {{#if isAdmin}}
       <li id="desck"><a href="/admpanel">{{__ 'ADMIN panel'}}</a></li>
@@ -114,11 +135,16 @@
           <img src="/est.png" alt="Russian" style="width: 50px; height: 50px; border-radius: 50%;">
         </a>
       </li>
-       <button class="mobile-menu-button" onclick="toggleMenu()">Menu</button>
+       <div class="mobile-menu-button" onclick="toggleMenu()">
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
         <ul id="nav-mobile-a">
   {{#if user}}
     <li id="desck">
-      <a href="/orders" style="color: white;">Welcome, {{user.username}}</a>
+      <a href="/orders" style="color: white;">ORDERS, {{user.username}}</a>
     </li>
     {{#if isAdmin}}
       <li><a href="/admpanel">{{__ 'ADMIN PANEL'}}</a></li>
@@ -126,6 +152,7 @@
     <li><a href="/">{{__ 'MAIN'}}</a></li>
     <li><a href="/products">{{__ 'PRODUCTS'}}</a></li>
     <li><a href="/contact">{{__ 'CONTACT'}}</a></li>
+    <li><a href="/about">{{__ 'ABOUT US'}}</a></li>
     <li><a href="/card">{{__ 'CARD'}}</a></li>
     <li><a href="/favorites">{{__ 'FAVORITE'}}</a></li>
     <li><a href="/auth/logout">{{__ 'LOG OUT'}}</a></li>

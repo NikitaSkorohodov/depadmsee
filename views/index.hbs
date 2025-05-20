@@ -27,17 +27,19 @@
     height: auto; /* Dynamic height for cards */
 }
 
-    .first-section {
-    display: flex;                    /* Enables Flexbox layout */
+.first-section {
+    display: flex;                    
+    flex-direction: column;           /* Arranges items in a column */
     align-items: center;              /* Centers items vertically */
     justify-content: center;          /* Centers items horizontally */
-    height: 1000px;                    /* Maintains the height */
+    height: 1000px;                    
     background-image: url("/bg1.png");
-    background-size: cover;           /* Cover the entire div */
-    background-position: bottom;      /* Center the background image */
-    background-repeat: no-repeat;     /* Prevent the image from repeating */
-    width: 100%;                      /* Optional, set width for your div */
+    background-size: cover;           
+    background-position: bottom;      
+    background-repeat: no-repeat;     
+    width: 100%;                      
 }
+
 .body{
     background-color: #6F2FCE; 
 }
@@ -52,12 +54,20 @@
 }
 .first-section h1 {
     color: #ffffff;          /* Sets the text color to white */
-    font-size: 80px;         /* Sets the font size to 40px */
+    font-size: 100px;         /* Sets the font size to 40px */
     font-family: 'Saira-condensed', sans-serif; /* Ensures the font is Saira */
     text-align: center;      /* Optional: Centers the text horizontally */
     margin: 0;               /* Optional: Removes default margin */
     text-transform: uppercase;
     font-weight: bold;               /* Optional: Removes default margin */
+}
+.first-section h2 {
+    color: #ffffff;          /* Sets the text color to white */
+    font-size: 50px;         /* Sets the font size to 40px */
+    font-family: 'Saira-condensed', sans-serif; /* Ensures the font is Saira */
+    text-align: center;      /* Optional: Centers the text horizontally */
+    margin: 0;               /* Optional: Removes default margin */
+    text-transform: uppercase;               /* Optional: Removes default margin */
 }
 @media only screen and (max-width: 600px) {
     .first-section h1 {
@@ -98,7 +108,7 @@
     flex: 1; /* Allow the text container to take available space */
 }
 
-.line-with-image-text h2 {
+.line-with-image-text h3 {
     margin: 0; /* Removes default margin */
     font-family: 'Arial', sans-serif; /* Adjust font */
     color: #fdfdfd; /* Set text color */
@@ -181,22 +191,24 @@
 
 </style>
 <div class="first-section">
-<h1>{{__ 'TO PERFORM YOUR BEST'}}</h1>
+    <h2>{{__ 'EVERYFYTHING YOU NEED'}}</h2>
+    <h1>{{__ 'TO PERFORM YOUR BEST'}}</h1>
 </div>
+
 <div class="second-section">
   <div class="line-with-image-text">
-    <img src="/Group 3.png" alt="Your Image" class="line-image">
-    <div class="line-text">
-        <h2>best pc for you!</h2>
+    
+        <h3>{{__ 'Best pc for you'}}</h3>
         
-    </div>
+    <img src="/Group 3.png" alt="Your Image" class="line-image">
+    
 </div>
 
 {{#if products.length}}
 <div class="carousel-container">
     <div class="carousel">
         {{#each products}}
-      <div class="prod">
+     <div class="prod">
         <div class="card">
           <a href="/products/{{id}}" target="_blank" style="color: #000000;">
           <div class="card-image">
@@ -215,21 +227,35 @@
 
             </div>
             <div style="display: flex;  gap: 20px; justify-content: center; align-items: center;  padding-top: 10px; ">
-            <div>
-            <p>gpu {{gpu}}</p>
-            <p>cpu {{cpu}}</p>
+              <div>
+            <div style="display: flex; align-items: center;">
+        <img src="/sgpu.png" alt="GPU Image" style="width: 30px; height: auto; margin-right: 10px;">
+        <p>GPU: {{gpu}}</p>
+    </div>
+    <div style="display: flex; align-items: center;">
+        <img src="/scpu.png" alt="CPU Image" style="width: 30px; height: auto; margin-right: 10px;">
+        <p>CPU: {{cpu}}</p>
+    </div>
+    </div>
+            
+              <div>
+            <div style="display: flex; align-items: center;">
+        <img src="/srum.png" alt="GPU Image" style="width: 30px; height: auto; margin-right: 10px;">
+        <p>RUM: {{rum}}</p>
+    </div>
+    <div style="display: flex; align-items: center;">
+        <img src="/sssd.png" alt="CPU Image" style="width: 30px; height: auto; margin-right: 10px;">
+        <p>SSD: {{ssd}}</p>
+    </div>
+    </div>
             </div>
-             <div>
-            <p>rum {{rum}}</p>
-            <p>ssd {{ssd}}</p>
-            </div>
-            </div>
+            
           </div>
           </a>
           <div class="card-action actions">
             <form action="/card/add" method="POST" style="display:inline;">
               <input type="hidden" name="id" value="{{id}}">
-              <button type="submit" class="btn btn-primary">{{__ 'Buy'}}</button>
+              <button type="submit" class="btn btn-primary">{{../__ 'Buy'}}</button>
             </form>
             <form action="/favorites/add" method="POST">
               <input type="hidden" name="productId" value="{{id}}">
@@ -250,31 +276,30 @@
 <div class="three-section">
   <div class="two-sections">
     <div class="section" style="background-image: url('/mbg1.png');">
-        <h2>FOR GAMERS</h2>
-        <a href="/products?priceMin=&priceMax=&category=for+gamers&gpu=&cpu=&rum=&ssd=">
-    <button type="submit" class="linkbtn">FIND</button>
-</a>
+        <h2>{{__ 'FOR GAMERS'}}</h2>
+        <a href="/products?priceMin=&priceMax=&category=for+gamming&gpu=&cpu=&rum=&ssd=">
+          <button type="submit" class="linkbtn">{{__ 'FIND'}}</button>
+        </a>
     </div>
     <div class="section1" style="background-image: url('/mbg2.png');">
-        <h2>FOR STUDENTS</h2>
+        <h2>{{__ 'FOR STUDENTS'}}</h2>
         <a href="/products?priceMin=&priceMax=&category=for+students&gpu=&cpu=&rum=&ssd=">
-    <button type="submit" class="linkbtn">FIND</button>
-</a>
+          <button type="submit" class="linkbtn">{{__ 'FIND'}}</button>
+        </a>
     </div>
-</div>
- <div class="two-sections">
+  </div>
+  <div class="two-sections">
     <div class="section1" style="background-image: url('/mbg3.png');">
-        <h2>FOR WORK</h2>
+        <h2>{{__ 'FOR WORK'}}</h2>
         <a href="/add">
-    <button type="submit" class="linkbtn">FIND</button>
-</a>
+          <button type="submit" class="linkbtn">{{__ 'FIND'}}</button>
+        </a>
     </div>
     <div class="section" style="background-image: url('/mbg4.png');">
-        <h2>FOR PRO</h2>
+        <h2>{{__ 'FOR PRO'}}</h2>
         <a href="/add">
-    <button type="submit" class="linkbtn">FIND</button>
-</a>
+          <button type="submit" class="linkbtn">{{__ 'FIND'}}</button>
+        </a>
     </div>
-</div>
-
+  </div>
 </div>

@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     const isAdmin = user && user.role === 'admin';
 
     res.render('index', {
-      title: 'главная страница',
+      title: 'home page',
       isHome: true,
       products,
       user, // Передаем информацию о пользователе в шаблон

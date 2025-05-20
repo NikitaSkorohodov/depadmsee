@@ -191,14 +191,12 @@
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
-      background-color: #007bff;
+      background-color: #aa00ff;
       color: #fff;
       cursor: pointer;
     }
 
-    .add-comment button:hover {
-      background-color: #0056b3;
-    }
+    
       @media (max-width: 768px) {
     .info {
       flex-direction: column;
@@ -213,7 +211,7 @@
 <div class="info" style="display: flex; align-items: center; padding-top: 200px; padding-bottom: 50px;">
   <img src="{{product.img}}" alt="{{product.title}}" style="flex: 1; margin-right: 20px;">
   <div style="flex: 2;">
-    <h1 style="color: #020034; font-size: 70px; font-weight: bold; font-family: Arial, sans-serif; text-transform: uppercase;">{{product.title}}</h1>
+    <h1 style="color: #020034; font-size: 70px; font-weight: bold; font-family: Arial, sans-serif; padding-top: 100px;">{{product.title}}</h1>
     <div style="display: flex;  gap: 20px; ">
             {{#if product.sale}}
   <p class="sale" style="color: #ff0101; font-weight: bold; font-family: Arial, sans-serif; text-transform: uppercase;">€{{product.sale}}</p>
@@ -284,7 +282,7 @@
 </div>
 <div class="commentssection" style="background-color: #000000; width: 100%;  justify-items: center;  ">
   <div class="comments" style="background-color: #a9a9a9; width: 50%; ">
-    <h2>Комментарии</h2>
+    <h2>COMMENTS</h2>
     <ul>
       {{#each product.comments}}
         <li>
@@ -297,16 +295,16 @@
   </div>
 
   <div class="add-comment" style="width: 50%;">
-    <h3 style="color: #fff;">Добавить комментарий</h3>
+    <h3 style="color: #fff;">ADD COMMENTS</h3>
     {{#if user}}
     <form id="commentForm" >
       <input type="hidden" id="user" name="user" value="{{user.username}}"> <!-- Автоматически заполненное имя пользователя -->
-      <label for="text">Комментарий:</label>
+      <label for="text">COMMENTS:</label>
       <textarea style="background-color: #a9a9a9;" id="text" name="text" required></textarea>
-      <button type="submit">Отправить</button>
+      <button type="submit">SEND</button>
     </form>
     {{else}}
-    <p style="color: #fff;">Пожалуйста, <a href="/login">войдите</a>, чтобы оставить комментарий.</p>
+    <p style="color: #fff;">please, <a href="/login">log in</a>, that send comment.</p>
     {{/if}}
   </div>
 </div>

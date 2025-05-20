@@ -183,7 +183,10 @@
     </script>
   
   
-  <button type="submit" class="btn btn-primary" style="margin-top: 30px;">Apply filters</button>
+  <button type="submit" class="btn btn-primary" style="margin-top: 30px;">
+  {{__ 'Apply filters'}}
+</button>
+
 </form>
 </div>
 <script>
@@ -299,7 +302,7 @@
           <div class="card-action actions">
             <form action="/card/add" method="POST" style="display:inline;">
               <input type="hidden" name="id" value="{{id}}">
-              <button type="submit" class="btn btn-primary">{{__ 'Buy'}}</button>
+              <button type="submit" class="btn btn-primary">{{../__ 'Buy'}}</button>
             </form>
             <form action="/favorites/add" method="POST">
               <input type="hidden" name="productId" value="{{id}}">

@@ -145,7 +145,7 @@ router.get('/all-orders', isAdmin, async (req, res) => {
     }));
 
     res.render('all-orders', {
-      title: 'Все заказы',
+      title: 'all-orders',
       orders: formattedOrders,
       user, // Передаем информацию о пользователе в шаблон
       isAdmin 
@@ -159,7 +159,7 @@ router.get('/all-orders', isAdmin, async (req, res) => {
 router.post('/delete/:id', async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.id);
-    res.redirect('/orders');
+    res.redirect('/orders/all-orders');
   } catch (error) {
     console.error('Error deleting order:', error);
     res.status(500).send('Internal Server Error');

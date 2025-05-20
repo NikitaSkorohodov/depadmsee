@@ -60,7 +60,7 @@
     display: block; /* Ensures proper alignment */
     font-family: 'Saira-condensed', sans-serif;
 }
-.likebtn {
+.likebtn, .likebtn:hover {
   
   color: #ffffff;
   background-color: #4f0088;
@@ -68,10 +68,14 @@
   font-size: 30px;
   
 }
-.btn:hover, .likebtn:hover {
+.btn:hover {
   color: #4f0088;
   background-color: #EFAD12;
   font-family: 'Saira-condensed', sans-serif;
+}
+.linkbtn:active, .linkbtn:focus {
+    background-color: #EFAD12;
+     border-bottom: none;
 }
 .btn i:hover {
   color: #4f0088;

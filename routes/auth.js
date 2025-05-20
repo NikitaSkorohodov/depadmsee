@@ -31,7 +31,7 @@ router.post('/register', async (req, res) => {
 
     res.redirect('/auth/login');
   } catch (error) {
-    console.error('Ошибка регистрации:', error);
+    console.error('Registration err:', error);
     res.redirect('/auth/register');
   }
 });
@@ -49,16 +49,16 @@ router.get('/create-admin', isAdmin, (req, res) => {
   })});
 
 router.post('/create-admin', isAdmin, async (req, res) => {
-  const { username, password } = req.body;
+  const { username, email, password } = req.body;
 
   try {
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ username, email });
     if (existingUser) {
       return res.redirect('/auth/create-admin');
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newAdmin = new User({ username, password: hashedPassword, role: 'admin' });
+    const newAdmin = new User({ username, email, password: hashedPassword, role: 'admin' });
     await newAdmin.save();
 
     res.redirect('/');

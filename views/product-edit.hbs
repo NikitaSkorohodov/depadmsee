@@ -4,6 +4,7 @@
     font-size: 16px;
     padding: 10px 20px; /* Increase padding for bigger buttons */
     margin-right: 10px; /* Space between buttons */
+    line-height: 0px;
   }
 
   /* Ensure buttons appear on the same line */
@@ -13,16 +14,74 @@
     gap: 10px; /* Optional space between the buttons */
   }
 
-  .btn-primary {
-    background-color: #dd00ff;
-  }
+ .btn-primary {
+  background-color: #EFAD12;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
 
-  .btn-danger {
-    background-color: #dc3545;
-  }
+.btn-danger {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+   .first-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 60vh;
+      padding: 20px;
+      background-image: url("/image.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 80px;
+      color: #EFAD12;
+      font-weight: bold;
+    }
+    /* Make the form area narrower and centered */
+form {
+  max-width: 70%; /* You can adjust this to 500px or 400px for even shorter */
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+/* Ensure the buttons are centered and the text is centered inside */
+.button-container {
+  display: flex;
+  justify-content: center; /* Center buttons horizontally */
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.btn {
+  font-size: 16px;
+  padding: 12px 24px;
+  text-align: center;
+  display: inline-block;
+  width: 120px; /* Set a fixed width if needed */
+}
+
 </style>
-<div style="padding: 20px; padding-top: 300px; background-color: #F0F0F0;">
-<h1>Edit/Delite {{product.title}}</h1>
+<div style=" background-color: #F0F0F0;">
+<div class="first-section">
+        <h1>{{__ 'EDIT'}}</h1>
+    </div>
 
 <form action="/products/edit" method="POST">
   <div class="input-field">
@@ -81,8 +140,11 @@
   </div>
   
   <input type="hidden" name="id" value="{{product.id}}">
-   <button class="btn btn-primary">Save</button>
-   <button class="btn btn-danger" id="delete-btn" onclick="deleteProduct('{{product.id}}')">Delete</button>
+   <div class="button-container">
+  <button class="btn btn-primary" type="submit">Save</button>
+  <button class="btn btn-danger" type="button" onclick="deleteProduct('{{product.id}}')">Delete</button>
+</div>
+
 </form>
 
 <!-- Delete Button -->

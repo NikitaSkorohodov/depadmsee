@@ -13,24 +13,26 @@
     }
 
     .container {
-      width: 80%;
       margin: 0 auto;
       background-color: #fff;
-      padding: 20px;
       border-radius: 8px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding-bottom: 100px;
     }
 
     .container > ul {
       list-style-type: none;
       padding: 0;
+      margin: 0;
     }
 
     .container > ul > li {
-      margin-bottom: 20px; /* Отступ между заказами */
+      margin: 20px auto; /* vertical spacing and center horizontally */
       padding: 10px;
       border: 1px solid #ddd;
       border-radius: 4px;
+      width: 60%; /* make the order item narrower */
+      background-color: #fafafa;
     }
 
     .container > ul > li > ul {
@@ -39,7 +41,7 @@
     }
 
     .container > ul > li > ul > li {
-      margin-bottom: 10px; /* Отступ между курсами в заказе */
+      margin-bottom: 10px; /* spacing between products in an order */
     }
 
     .container > ul > li > p {
@@ -54,40 +56,61 @@
     .container > ul > li > p:last-child {
       color: #777;
     }
+
+    .first-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 60vh;
+      padding: 20px;
+      background-image: url("/image.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      width: 100%;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 80px;
+      color: #EFAD12;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <div class="container" style="min-height: 1500px; padding: 200px; padding-top: 500px;" >
-    <h1>{{title}}</h1>
+  <div class="container">
+    <div class="first-section">
+        <h1>{{__ 'Orders'}}</h1>
+    </div>
 
     {{#if orders.length}}
       <ul>
-  {{#each orders}}
-    <li>
-      <p>Заказ создан: {{date}}</p>
-      <p>Итоговая цена: {{totalPrice}} eur.</p>
-      <p>Точка выдачи: {{deliveryPoint}}</p>
-      <ul>
-        {{#each products}}
+        {{#each orders}}
           <li>
-            <p>prod: {{this.title}}</p>
-            {{#if this.sale}}
-              <p style="color: #080808;">Цена: {{this.sale}} eur.</p>
-            {{/if}}
-            {{#unless this.sale}}
-              <p  style="color: #080808;">Цена: {{this.price}} eur.</p>
-            {{/unless}}
+            <p>Order created: {{date}}</p>
+            <p>Total price: {{totalPrice}} EUR</p>
+            <p>Pickup point: {{deliveryPoint}}</p>
+            <ul>
+              {{#each products}}
+                <li>
+                  <p>Product: {{this.title}}</p>
+                  {{#if this.sale}}
+                    <p style="color: #080808;">Price: {{this.sale}} EUR</p>
+                  {{/if}}
+                  {{#unless this.sale}}
+                    <p style="color: #080808;">Price: {{this.price}} EUR</p>
+                  {{/unless}}
+                </li>
+              {{/each}}
+            </ul>
           </li>
         {{/each}}
       </ul>
-    </li>
-  {{/each}}
-</ul>
-
     {{else}}
-      <p>У вас пока нет заказов.</p>
+      <p style="text-align: center;">You don't have any orders yet.</p>
     {{/if}}
   </div>
-
 </body>
 </html>

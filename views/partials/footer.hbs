@@ -30,6 +30,9 @@
 .links-column a {
     color: #ffffff;                    /* Keeps links white */
     text-decoration: none;             /* Removes underline */
+    font-weight: bold; 
+    font-size: 20px; 
+    font-family: 'Saira-condensed', sans-serif;
 }
 
 .links-column a:hover {
@@ -70,29 +73,71 @@
         margin-left: 0px; 
     }
 }
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
 </style>
 <div class="ffirst-section">
-    <img src="/Group 3.png" alt="Logo" class="logo">
+    <img src="/Group 3.png" alt="Logo" class="logo" style="width: 230px; height: 70px;  margin-left: 20px;">
 <h1>{{__ 'Prebuilt Power to Love'}}</h1>
+<div class="footer-content" style="display: flex; align-items: center; justify-content: center; gap: 20px; padding-top: 300px;">
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
+        <img src="/fbg1.png" alt="Footer Image">
+        <p style="color:#ffffff; font-size: 16px; font-family: 'Saira-condensed', sans-serif;">Free delivery across Estonia!</p>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
+        <img src="/fbg2.png" alt="Footer Image">
+        <p style="color:#ffffff; font-size: 16px; font-family: 'Saira-condensed', sans-serif;">Installment option</p>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
+        <img src="/fbg3.png" alt="Footer Image">
+        <p style="color:#ffffff; font-size: 16px; font-family: 'Saira-condensed', sans-serif;">All goods with sales guarantee!</p>
+    </div>
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;">
+        <img src="/fbg4.png" alt="Footer Image">
+        <p style="color:#ffffff; font-size: 16px; font-family: 'Saira-condensed', sans-serif;">Free email and phone support!</p>
+    </div>
+</div>
+
+
 </div>
 <footer class="footer">
     
     <div class="footer-column logo-column">
         <img src="/Group 3.png" alt="Logo" class="logo">
+        <p style="width: 200px;">Nordic Gamer is the Estonian gaming brand specialising in powerful PC building. This website is for consumer products of Nordic Gamer OÜ only.</p>
     </div>
     <div class="footer-column links-column">
         <ul>
-            <li><a href="/about">About</a></li>
-            <li><a href="/contact">Contact</a></li>
-            <li><a href="/services">Services</a></li>
+            <p style="color:#EFAD12; font-weight: bold; font-size: 16px; font-family: 'Saira-condensed', sans-serif;">PRODUCTS</p>
+            <li><a href="/products?priceMin=&priceMax=&category=for+pro&gpu=&cpu=&rum=&ssd=">For pro</a></li>
+            <li><a href="/products?priceMin=&priceMax=&category=for+gamming&gpu=&cpu=&rum=&ssd=">For gammers</a></li>
+            <li><a href="/products?priceMin=&priceMax=&category=for+students&gpu=&cpu=&rum=&ssd=">For students</a></li>
+            <li><a href="/products?priceMin=&priceMax=&category=for+work&gpu=&cpu=&rum=&ssd=">For work</a></li>
+            <li><a href="/products">All products</a></li>
         </ul>
     </div>
     <div class="footer-column links-column">
         <ul>
-            <li><a href="/privacy">Privacy Policy</a></li>
-            <li><a href="/terms">Terms of Use</a></li>
-            <li><a href="/faq">FAQ</a></li>
+            <p style="color:#EFAD12; font-weight: bold; font-size: 16px; font-family: 'Saira-condensed', sans-serif;">USEFULL LINKS</p>
+            <li><a href="/about">About us</a></li>
+            <li><a href="/terms">Support</a></li>
+            <li><a href="/contact">Contacts</a></li>
         </ul>
     </div>
 </footer>
+<div style="background-color: #EFAD12; height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px;">
+    <div style="color: rgb(10, 10, 10); font-family: 'Saira-condensed', sans-serif; font-size: 18px;">
+        © Nordic Gamer OÜ. All rights reserved. 2024
+    </div>
+    <div style="display: flex; gap: 20px;">
+        <a href="#" style="color: rgb(0, 0, 0); text-decoration: none; font-family: 'Saira-condensed', sans-serif;">Legal</a>
+        <a href="#" style="color: rgb(0, 0, 0); text-decoration: none; font-family: 'Saira-condensed', sans-serif;">Privacy policy</a>
+        <a href="#" style="color: rgb(0, 0, 0); text-decoration: none; font-family: 'Saira-condensed', sans-serif;">Cookie policy</a>
+    </div>
+</div>
+
 

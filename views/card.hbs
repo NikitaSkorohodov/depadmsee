@@ -12,11 +12,26 @@
     .container {
       width: 80%;
       margin: 0 auto;
-      padding-top: 200px;
     }
+     .first-section {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 60vh;
+      padding: 20px;
+      background-image: url("/image.png");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      width: 100%;
+    }
+
     h1 {
       text-align: center;
-      margin-bottom: 20px;
+      font-size: 80px;
+      color: #EFAD12;
+      font-weight: bold;
     }
     table {
       width: 100%;
@@ -69,7 +84,9 @@
 </head>
 <body>
   <div class="container">
-    <h1>{{title}}</h1>
+    <div class="first-section">
+        <h1>{{__ 'CARD'}}</h1>
+    </div>
     {{#if products.length}}
       <table>
         <thead>
@@ -105,7 +122,7 @@
       </div>
       <form id="checkoutForm" action="/card/checkout" method="POST">
         <input type="hidden" name="deliveryPoint" id="selectedDeliveryPoint" required>
-        <button type="submit" id="checkoutButton" disabled>Оформить заказ</button>
+        <button type="submit" class="linkbtn" id="checkoutButton" disabled>create order</button>
       </form>
     {{else}}
       <p>{{__ 'Cart is empty'}}</p>

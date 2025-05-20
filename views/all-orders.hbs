@@ -10,11 +10,15 @@
       padding: 10px;
       margin-bottom: 10px;
       position: relative;
+      width: 70%; /* Set the width of the order item */
+      margin: 0 auto; /* Center the order item */
     }
+
     .course-item {
       margin-top: 5px;
       margin-bottom: 5px;
     }
+
     .delete-button {
       position: absolute;
       top: 10px;
@@ -25,18 +29,42 @@
       border: none;
       cursor: pointer;
     }
-        .container {
-        width: 80%;
-        margin-top: 100px !important;
-        margin-bottom: 100px !important;
-        z-index: 0;
-        position: relative;
+
+    .container {
+      width: 80%;
+      margin-bottom: 100px !important;
+      z-index: 0;
+      position: relative;
+      margin: 0 auto; /* Center the container */
+    }
+
+    .first-section {
+      display: flex; /* Enables Flexbox */
+      flex-direction: column; /* Stack items vertically */
+      justify-content: center; /* Centers content vertically */
+      align-items: center; /* Centers content horizontally */
+      height: 60vh; /* Makes the section take the full height of the viewport */
+      padding: 20px;
+      background-image: url("/image.png");
+      background-size: cover; /* Cover the entire div */
+      background-position: center; /* Center the background image */
+      background-repeat: no-repeat; /* Prevent the image from repeating */
+      width: 100%; /* Optional, set width for your div */
+    }
+
+    h1 {
+      color: #EFAD12;
+      font-weight: bold;
+      font-size: 80px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>{{title}}</h1>
+    <div class="first-section">
+        <h1>{{__ 'All orders'}}</h1>
+    </div>
 
     {{#if orders.length}}
       <ul>
@@ -45,16 +73,16 @@
             <form action="/orders/delete/{{_id}}" method="POST">
               <button type="submit" class="delete-button">X</button>
             </form>
-            <p>Заказ создан: {{date}}</p>
-            <p>Пользователь: {{user.username}}</p>
-            <p>email: {{user.email}}</p>
-            <p>Итоговая цена: {{totalPrice}} eur.</p>
-            <p>Точка выдачи: {{deliveryPoint}}</p> <!-- Добавляем отображение точки выдачи -->
+            <p>Order created: {{date}}</p>
+            <p>User: {{user.username}}</p>
+            <p>Email: {{user.email}}</p>
+            <p>Total price: {{totalPrice}} EUR</p>
+            <p>Pickup point: {{deliveryPoint}}</p>
             <ul class="course-list">
               {{#each products}}
                 <li class="course-item">
-                  <p>product: {{this.title}}</p>
-                  <p>price: {{this.price}} eur.</p>
+                  <p>Product: {{this.title}}</p>
+                  <p>Price: {{this.price}} EUR</p>
                 </li>
               {{/each}}
             </ul>
@@ -62,7 +90,7 @@
         {{/each}}
       </ul>
     {{else}}
-      <p>У вас пока нет заказов.</p>
+      <p>You don't have any orders yet.</p>
     {{/if}}
   </div>
 </body>

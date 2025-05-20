@@ -7,7 +7,7 @@ section {
     align-items: center; /* Centers content horizontally */
     height: 100vh; /* Makes the section take the full height of the viewport */
     padding: 20px;
-    background-color: #200072; /* Keeps your original background color */
+    background-color: #000000; /* Keeps your original background color */
 }
    .first-section {
     display: flex; /* Enables Flexbox */
@@ -31,31 +31,87 @@ section {
     width: 100%;
     align-items: center; /* Centers content horizontally inside the section */
     max-width: 800px; /* Maintains the width you set */
-    height: 400px; /* Keeps the height of the section */
+   
     padding: 20px;
     color: white;
     text-align: center;
     border-radius: 10px; /* Adds rounded corners */
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Keeps your shadow effect */
+     font-family: 'Saira-condensed', sans-serif;
+     font-size: 25px;
+}
+body {
+        color: white;
+    }
+     h1 {
+      text-align: center;
+      font-size: 80px;
+      color: #EFAD12;
+      font-weight: bold;
+    }
+    #location-info {
+    display: flex;
+    gap: 10px; /* Расстояние между элементами */
+     font-family: 'Saira-condensed', sans-serif;
+     font-size: 35px;
 }
 
 </style>
 <html lang="en">
 
 <body>
-    
+
     <main>
         <div class="first-section">
-<h1 style="color: rgb(255, 225, 0);">{{__ 'Contact Us'}}</h1>
-            
-           <div class="section" style="background-color: black; display: flex; height: 100px;">
-        <p >Phone: +1 234 567 890   Email: contact@example.com</p>
-    </div>
-</div>
-        <section style="padding: 20px; padding-top: 300px; background-color: #131313; justify-content: center;">
-            
+            <h1 >Contact Us</h1>
+           
+        </div>
+
+        <section style="padding: 20px; padding-top: 50px; ">
+            <div id="location-info">
+                <p id="address">Default Address</p>
+                <p id="worktime">Default Worktime</p>
+            </div>
+            <div class="section">
+                <p>Phone: <span id="phone">+1 234 567 890</span> | Email: <span id="email">contact@example.com</span></p>
+            </div>
+            <div>
+                <button onclick="setCurrentLocation('Tartu')" class="linkbtn">Tartu</button>
+                <button onclick="setCurrentLocation('Tallinn')" class="linkbtn">Tallinn</button>
+            </div>
+            <iframe id="map" src="" style="width:100%; height:500px; border:0; margin-top:20px;" allowfullscreen="" loading="lazy"></iframe>
         </section>
     </main>
-    
+
+    <script>
+        const locations = {
+            'Tartu': {
+                url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2493.9053038250595!2d26.71616031555943!3d58.37798408132519!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46eb36b4590e9a51%3A0x30b452d9eea1b6b8!2sSoola%20tn%201a%2C%2051004%20Tartu%2C%20Estonia!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s',
+                phone: '+372 567 890',
+                address: 'Soola tn 1a, 51004 Tartu, Estonia',
+                email: 'tartu@example.com',
+                worktime: '9 AM - 5 PM',
+            },
+            'Tallinn': {
+                url: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2522.745798081606!2d24.753574915538063!3d59.4316374816908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4692937371abfe77%3A0x97c0a604b825f81c!2sLiivalaia%20tn%2026%2C%2010118%20Tallinn%2C%20Estonia!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s',
+                phone: '+372 123 456',
+                address: 'Liivalaia tn 26, 10118 Tallinn, Estonia',
+                email: 'tallinn@example.com',
+                worktime: '10 AM - 6 PM',
+            }
+        };
+
+        function setCurrentLocation(location) {
+            document.getElementById('phone').innerText = locations[location].phone;
+            document.getElementById('email').innerText = locations[location].email;
+            document.getElementById('address').innerText = locations[location].address;
+            document.getElementById('worktime').innerText = locations[location].worktime;
+            document.getElementById('map').src = locations[location].url;
+        }
+
+        // Set default location
+        setCurrentLocation('Tartu');
+    </script>
+
 </body>
 </html>
